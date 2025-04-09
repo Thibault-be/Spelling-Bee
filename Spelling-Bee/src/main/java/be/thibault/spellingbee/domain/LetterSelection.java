@@ -1,11 +1,9 @@
 package be.thibault.spellingbee.domain;
 
-import java.util.List;
-
-public record LetterSelection(char[] letterSelection, char compulsoryLetter) {
+public record LetterSelection(char[] vowelSelection, char[] consonantSelection, char compulsoryLetter) {
 
     public LetterSelection {
-        if (letterSelection.length != 7) {
+        if (vowelSelection.length + consonantSelection.length != 7) {
             throw new IllegalArgumentException("not enough letters were provided");
         }
 

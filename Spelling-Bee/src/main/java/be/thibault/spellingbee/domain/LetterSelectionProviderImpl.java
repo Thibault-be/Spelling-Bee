@@ -22,22 +22,14 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     @Override
     public LetterSelection getLetterSelection() {
 
-        char[] sevenUniqueLetters = getSevenUniqueLetters();
-        int compulsoryLetterIndex = determineCompulsoryLetter();
-
-        return new LetterSelection(sevenUniqueLetters, sevenUniqueLetters[compulsoryLetterIndex]);
-    }
-
-
-    private char[] getSevenUniqueLetters() {
-
         int numberOfVowels = RANDOM.nextInt(MIN_VOWELS, MAX_VOWELS);
-        char[] vowels = getLetters(numberOfVowels, VOWELS);
+        char[] vowelSelection = getLetters(numberOfVowels, VOWELS);
 
         int numberOfConsonants = NUMBER_OF_LETTERS - numberOfVowels;
-        char[] consonants = getLetters(numberOfConsonants, CONSONANTS_NO_S);
+        char[] consonantSelection = getLetters(numberOfConsonants, CONSONANTS_NO_S);
+        char compulsoryLetter = determineCompulsoryLetter(vowelSelection, consonantSelection);
 
-        return ArrayUtils.addAll(vowels, consonants);
+        return new LetterSelection(vowelSelection, consonantSelection, compulsoryLetter);
     }
 
     private char[] getLetters(int numberOfLetters, char[] letterArray) {
@@ -61,8 +53,12 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     }
 
 
-    private int determineCompulsoryLetter() {
-        return RANDOM.nextInt(0, NUMBER_OF_LETTERS);
+    private char determineCompulsoryLetter(char[] vowelSelection, char[] consonantSelection) {
+
+        char[] letters = ArrayUtils.addAll(vowelSelection, consonantSelection);
+        int randomIndex = RANDOM.nextInt(0, NUMBER_OF_LETTERS);
+
+        return letters[randomIndex];
     }
 
 }
