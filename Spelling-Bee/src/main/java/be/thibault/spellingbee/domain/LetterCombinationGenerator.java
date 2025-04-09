@@ -1,5 +1,6 @@
 package be.thibault.spellingbee.domain;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class LetterCombinationGenerator {
     public Set<String> generateCombinations(LetterSelection letterSelection, int lengthWord){
         Set<String> result = new HashSet<>();
 
-        char[] letters = letterSelection.letterSelection();
+        char[] letters = ArrayUtils.addAll(letterSelection.vowelSelection(), letterSelection.consonantSelection());
 
         generateCombinationsHelper(letters, "", lengthWord, result);
         return result;

@@ -21,10 +21,9 @@ public class LetterCombosProviderImpl implements LetterCombosProvider {
     public LetterCombos generateLetterCombos(LetterSelection letterSelection) {
 
         Set<String> fourLetterWords = letterCombinationGenerator.generateCombinations(letterSelection, 4);
+        Set<String> fiveLetterWords = letterCombinationGenerator.generateCombinations(letterSelection, 5);
 
-
-
-        return null;
+        return new LetterCombos(fourLetterWords, fiveLetterWords);
     }
 
     public List<FourLetterCombo> getFourLetterCombos(LetterSelection letterSelection){
