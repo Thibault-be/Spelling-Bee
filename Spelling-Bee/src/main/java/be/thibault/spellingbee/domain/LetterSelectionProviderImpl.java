@@ -1,5 +1,6 @@
 package be.thibault.spellingbee.domain;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,25 +22,25 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     @Override
     public LetterSelection getLetterSelection() {
 
-        List<String> sevenUniqueLetters = getSevenUniqueLetters();
+        char[] sevenUniqueLetters = getSevenUniqueLetters();
         int compulsoryLetterIndex = determineCompulsoryLetter();
 
-        return new LetterSelection(sevenUniqueLetters, sevenUniqueLetters.get(compulsoryLetterIndex));
+        return new LetterSelection(sevenUniqueLetters, sevenUniqueLetters[compulsoryLetterIndex]);
     }
 
 
-    private List<String> getSevenUniqueLetters() {
+    private char[] getSevenUniqueLetters() {
 
         int numberOfVowels = RANDOM.nextInt(MIN_VOWELS, MAX_VOWELS);
-        List<String> vowels = getLetters(numberOfVowels, VOWELS);
+        char[] vowels = getLetters(numberOfVowels, VOWELS);
 
         int numberOfConsonants = NUMBER_OF_LETTERS - numberOfVowels;
-        List<String> consonants = getLetters(numberOfConsonants, CONSONANTS_NO_S);
+        char[] consonants = getLetters(numberOfConsonants, CONSONANTS_NO_S);
 
-        return Stream.concat(vowels.stream(), consonants.stream()).toList();
+        return ArrayUtils.addAll(vowels, consonants);
     }
 
-    private List<String> getLetters(int numberOfLetters, char[] letterArray) {
+    private char[] getLetters(int numberOfLetters, char[] letterArray) {
 
         List<Integer> randomIntegers = new ArrayList<>();
 
@@ -50,9 +51,11 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
             }
         }
 
-        List<String> letters = new ArrayList<>();
+        char[] letters = new char[numberOfLetters];
+        int count = 0;
         for (Integer i : randomIntegers) {
-            letters.add(String.valueOf(letterArray[i]));
+            letters[count] = letterArray[i];
+            count++;
         }
         return letters;
     }

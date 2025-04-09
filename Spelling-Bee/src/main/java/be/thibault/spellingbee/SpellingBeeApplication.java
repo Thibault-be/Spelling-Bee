@@ -1,12 +1,19 @@
 package be.thibault.spellingbee;
 
-import be.thibault.spellingbee.domain.LetterSelection;
-import be.thibault.spellingbee.domain.LetterSelectionProviderImpl;
+import be.thibault.spellingbee.domain.*;
+import be.thibault.spellingbee.domain.words.LetterCombos;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SpellingBeeApplication {
+
+	//private final LetterCombosProvider letterCombosProvider;
+
+//	public SpellingBeeApplication(LetterCombosProvider letterCombosProvider) {
+//		this.letterCombosProvider = letterCombosProvider;
+//	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpellingBeeApplication.class, args);
@@ -14,12 +21,10 @@ public class SpellingBeeApplication {
 		LetterSelectionProviderImpl lp = new LetterSelectionProviderImpl();
 		LetterSelection letters = lp.getLetterSelection();
 
-		System.out.println(letters.letterSelection());
-		System.out.println(letters.compulsoryLetter());
+		LetterCombosProviderImpl provider = new LetterCombosProviderImpl(new LetterCombinationGenerator());
 
-		String s = new DictionaryCaller().callDictionary();
+		LetterCombos letterCombos = provider.generateLetterCombos(letters);
 
-		System.out.println(s);
 
 	}
 
