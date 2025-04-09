@@ -13,10 +13,9 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     private static final char[] CONSONANTS_NO_S = "bcdfghjklmnpqrtvwxyz".toCharArray();
     private static final char[] VOWELS = "aeiou".toCharArray();
     private static final int MAX_VOWELS = 3;
-    private static final int MIN_VOWELS = 1;
+    private static final int MIN_VOWELS = 2;
     private static final int NUMBER_OF_LETTERS = 7;
     private static final Random RANDOM = new Random();
-    private final List<String> sevenLetters = new ArrayList<>();
 
 
     @Override
@@ -52,7 +51,7 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
         }
 
         List<String> letters = new ArrayList<>();
-        for (Integer i : randomIntegers){
+        for (Integer i : randomIntegers) {
             letters.add(String.valueOf(letterArray[i]));
         }
         return letters;
