@@ -1,8 +1,8 @@
 package be.thibault.spellingbee.domain;
 
-import be.thibault.spellingbee.domain.words.FiveLetterCombo;
-import be.thibault.spellingbee.domain.words.FourLetterCombo;
-import be.thibault.spellingbee.domain.words.LetterCombos;
+import be.thibault.spellingbee.domain.lettercombo.FiveLetterCombo;
+import be.thibault.spellingbee.domain.lettercombo.FourLetterCombo;
+import be.thibault.spellingbee.domain.lettercombo.LetterCombos;
 
 import java.util.Set;
 import java.util.stream.Collectors;

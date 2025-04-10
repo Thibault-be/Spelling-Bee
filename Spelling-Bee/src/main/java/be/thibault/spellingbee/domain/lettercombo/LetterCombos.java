@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.domain.words;
+package be.thibault.spellingbee.domain.lettercombo;
 
 import java.util.Set;
 

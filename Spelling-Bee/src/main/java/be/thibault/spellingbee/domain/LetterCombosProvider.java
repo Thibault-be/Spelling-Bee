@@ -1,6 +1,6 @@
 package be.thibault.spellingbee.domain;
 
-import be.thibault.spellingbee.domain.words.LetterCombos;
+import be.thibault.spellingbee.domain.lettercombo.LetterCombos;
 
 public interface LetterCombosProvider {
 
