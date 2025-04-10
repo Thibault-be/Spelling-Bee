@@ -1,12 +1,11 @@
 package be.thibault.spellingbee.domain;
 
+import be.thibault.spellingbee.domain.words.FiveLetterCombo;
 import be.thibault.spellingbee.domain.words.FourLetterCombo;
 import be.thibault.spellingbee.domain.words.LetterCombos;
-import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //@Service
 public class LetterCombosProviderImpl implements LetterCombosProvider {
@@ -20,18 +19,12 @@ public class LetterCombosProviderImpl implements LetterCombosProvider {
     @Override
     public LetterCombos generateLetterCombos(LetterSelection letterSelection) {
 
-        Set<String> fourLetterWords = letterCombinationGenerator.generateCombinations(letterSelection, 4);
-        Set<String> fiveLetterWords = letterCombinationGenerator.generateCombinations(letterSelection, 5);
+        Set<String> fourLetterPermuations = letterCombinationGenerator.generateCombinations(letterSelection, 4);
+        Set<String> fiveLetterPermutations = letterCombinationGenerator.generateCombinations(letterSelection, 5);
 
-        return new LetterCombos(fourLetterWords, fiveLetterWords);
+        Set<FourLetterCombo> fourLetterCombos = fourLetterPermuations.stream().map(FourLetterCombo::new).collect(Collectors.toSet());
+        Set<FiveLetterCombo> fiveLetterCombos = fiveLetterPermutations.stream().map(FiveLetterCombo::new).collect(Collectors.toSet());
+
+        return new LetterCombos(fourLetterCombos, fiveLetterCombos);
     }
-
-    public List<FourLetterCombo> getFourLetterCombos(LetterSelection letterSelection){
-
-
-
-        return null;
-    }
-
-
 }
