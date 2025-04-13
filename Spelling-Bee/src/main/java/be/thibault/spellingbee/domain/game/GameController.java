@@ -2,9 +2,7 @@ package be.thibault.spellingbee.domain.game;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping ("/spelling-bollie")
@@ -30,10 +28,18 @@ public class GameController {
         }
     }
 
+    @GetMapping ("/{id}")
+    public GameState getGameById(@PathVariable String id){
+        return gameService.getGameById(id);
+    }
+
 
     //post word
+    @PostMapping ("/try-guess")
+    public String tryGuess(@RequestParam String guess,
+                           @RequestParam String gameId){
 
-    //get gamestate
-
+        return gameService.verifyGuess(guess, gameId);
+    }
 
 }

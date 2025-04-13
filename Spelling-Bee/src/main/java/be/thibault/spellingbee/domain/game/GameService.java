@@ -6,4 +6,8 @@ public interface GameService {
 
     void updateGameState();
 
+    String verifyGuess(String guess, String gameId);
+
+    GameState getGameById(String id);
+
 }
