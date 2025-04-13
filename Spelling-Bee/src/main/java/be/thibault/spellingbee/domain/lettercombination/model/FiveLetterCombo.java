@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.domain.lettercombo;
+package be.thibault.spellingbee.domain.lettercombination.model;
 
 public record FiveLetterCombo(String letterCombo) implements MultiLetterCombo {
 

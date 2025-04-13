@@ -1,10 +1,10 @@
-package be.thibault.spellingbee.domain.wordsolution;
+package be.thibault.spellingbee.domain.foundwords;
 
-public record FourLetterSolution(String fourLetterSolution) implements MultiLetterSolution {
+public record FourLetterPossibleWord(String fourLetterSolution) implements MultiLetterPossibleWord {
 
     private static final int LETTER_SOLUTION_LENGTH = 5;
 
-    public FourLetterSolution {
+    public FourLetterPossibleWord {
         if (fourLetterSolution.length() != LETTER_SOLUTION_LENGTH){
             throw new IllegalArgumentException("Should be a " + LETTER_SOLUTION_LENGTH + " letter letterCombo");
         }

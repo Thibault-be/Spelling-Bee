@@ -1,8 +1,9 @@
-package be.thibault.spellingbee.domain;
+package be.thibault.spellingbee.domain.lettercombination.service;
 
-import be.thibault.spellingbee.domain.lettercombo.FiveLetterCombo;
-import be.thibault.spellingbee.domain.lettercombo.FourLetterCombo;
-import be.thibault.spellingbee.domain.lettercombo.LetterCombos;
+import be.thibault.spellingbee.domain.letterselection.LetterSelection;
+import be.thibault.spellingbee.domain.lettercombination.model.FiveLetterCombo;
+import be.thibault.spellingbee.domain.lettercombination.model.FourLetterCombo;
+import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
 
 import java.util.Set;
 import java.util.stream.Collectors;

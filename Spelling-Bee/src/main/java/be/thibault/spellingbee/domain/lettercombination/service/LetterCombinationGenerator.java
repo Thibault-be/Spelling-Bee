@@ -1,10 +1,10 @@
-package be.thibault.spellingbee.domain;
+package be.thibault.spellingbee.domain.lettercombination.service;
 
+import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component

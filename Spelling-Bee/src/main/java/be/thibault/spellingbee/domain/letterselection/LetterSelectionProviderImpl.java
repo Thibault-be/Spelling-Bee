@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.domain;
+package be.thibault.spellingbee.domain.letterselection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 @Component
 public class LetterSelectionProviderImpl implements LetterSelectionProvider {

@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.domain.commonword;
+package be.thibault.spellingbee.domain.lettercombination.externaldictionary;
 
 import be.thibault.spellingbee.config.DictionaryApiClient;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.domain;
+package be.thibault.spellingbee.domain.letterselection;
 
 public record LetterSelection(char[] vowelSelection, char[] consonantSelection, char compulsoryLetter) {
 
