@@ -1,3 +1,6 @@
 spring:
   application:
     name: Spelling-Bee
+api:
+  dictionary:
+    basepath: "https://api.dictionaryapi.dev/api/v2/entries/en/"
