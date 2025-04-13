@@ -2,28 +2,29 @@ package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.domain.lettercombination.externaldictionary.CommonWordChecker;
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
-import be.thibault.spellingbee.domain.lettercombination.service.LetterCombinationGenerator;
 import be.thibault.spellingbee.domain.lettercombination.service.LetterCombosProvider;
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import be.thibault.spellingbee.domain.letterselection.LetterSelectionProvider;
-import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryEntryChecker;
+import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Service
 public class GameServiceImpl implements GameService {
 
     private final LetterSelectionProvider letterSelectionProvider;
     private final LetterCombosProvider letterCombosProvider;
-    private final LocalDictionaryEntryChecker localDictionaryEntryChecker;
+    private final LocalDictionaryService localDictionaryService;
     private final CommonWordChecker commonWordChecker;
 
     public GameServiceImpl(LetterSelectionProvider letterSelectionProvider,
                            LetterCombosProvider letterCombosProvider,
-                           LocalDictionaryEntryChecker localDictionaryEntryChecker,
+                           LocalDictionaryService localDictionaryService,
                            CommonWordChecker commonWordChecker) {
         this.letterSelectionProvider = letterSelectionProvider;
         this.letterCombosProvider = letterCombosProvider;
-        this.localDictionaryEntryChecker = localDictionaryEntryChecker;
+        this.localDictionaryService = localDictionaryService;
         this.commonWordChecker = commonWordChecker;
     }
 
@@ -32,7 +33,7 @@ public class GameServiceImpl implements GameService {
 
         LetterSelection letterSelection = this.letterSelectionProvider.getLetterSelection();
         LetterCombos letterCombos = this.letterCombosProvider.getLetterCombos(letterSelection);
-        Set<String> localEntries = localDictionaryEntryChecker.filterLocalEntriesFromCombos(letterCombos);
+        Set<String> localEntries = this.localDictionaryService.filterLocalEntriesFromCombos(letterCombos);
         Set<String> commonWords = commonWordChecker.filterCommonWordFromLocalEntries(localEntries);
 
         return new GameState(letterSelection, commonWords);

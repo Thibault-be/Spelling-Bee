@@ -19,4 +19,20 @@ public class GameState {
         this.possibleWords = possibleWords;
         this.foundWords = new HashSet<>();
     }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public LetterSelection getLetterSelection() {
+        return letterSelection;
+    }
+
+    public Set<String> getPossibleWords() {
+        return possibleWords;
+    }
+
+    public Set<String> getFoundWords() {
+        return foundWords;
+    }
 }

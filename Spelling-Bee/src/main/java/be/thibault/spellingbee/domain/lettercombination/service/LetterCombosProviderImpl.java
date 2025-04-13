@@ -1,18 +1,15 @@
 package be.thibault.spellingbee.domain.lettercombination.service;
 
-import be.thibault.spellingbee.domain.lettercombination.model.MultiLetterCombo;
-import be.thibault.spellingbee.domain.letterselection.LetterSelection;
-import be.thibault.spellingbee.domain.lettercombination.model.FiveLetterCombo;
-import be.thibault.spellingbee.domain.lettercombination.model.FourLetterCombo;
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
+import be.thibault.spellingbee.domain.letterselection.LetterSelection;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-//@Service
+@Service
 public class LetterCombosProviderImpl implements LetterCombosProvider {
 
     private final LetterCombinationGenerator letterCombinationGenerator;
