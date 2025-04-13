@@ -24,7 +24,6 @@ public class GameController {
         GameState gameState = gameService.startNewGame();
 
         try {
-            System.out.println("trying");
             return objectMapper.writer().writeValueAsString(gameState);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
