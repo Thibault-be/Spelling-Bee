@@ -1,10 +1,14 @@
 package be.thibault.spellingbee.domain.lettercombination.service;
 
+import be.thibault.spellingbee.domain.lettercombination.model.MultiLetterCombo;
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import be.thibault.spellingbee.domain.lettercombination.model.FiveLetterCombo;
 import be.thibault.spellingbee.domain.lettercombination.model.FourLetterCombo;
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,14 +22,19 @@ public class LetterCombosProviderImpl implements LetterCombosProvider {
     }
 
     @Override
-    public LetterCombos generateLetterCombos(LetterSelection letterSelection) {
+    public LetterCombos getLetterCombos(LetterSelection letterSelection) {
 
-        Set<String> fourLetterPermuations = letterCombinationGenerator.generateCombinations(letterSelection, 4);
-        Set<String> fiveLetterPermutations = letterCombinationGenerator.generateCombinations(letterSelection, 5);
+        Set<String> letterPermutations = this.letterCombinationGenerator.generateCombinations(letterSelection);
 
-        Set<FourLetterCombo> fourLetterCombos = fourLetterPermuations.stream().map(FourLetterCombo::new).collect(Collectors.toSet());
-        Set<FiveLetterCombo> fiveLetterCombos = fiveLetterPermutations.stream().map(FiveLetterCombo::new).collect(Collectors.toSet());
+        Map<Integer, List<String>> permutationsPerLength = letterPermutations.stream().collect(Collectors.groupingBy(String::length));
 
-        return new LetterCombos(fourLetterCombos, fiveLetterCombos);
+        LetterCombos letterCombos = new LetterCombos();
+        for (int wordLength = 4; wordLength < 9; wordLength++){
+            List<String> permutations = permutationsPerLength.get(wordLength);
+            permutations.stream().forEach(letterCombos::addMultiLetterCombo);
+        }
+        return letterCombos;
     }
+
+
 }

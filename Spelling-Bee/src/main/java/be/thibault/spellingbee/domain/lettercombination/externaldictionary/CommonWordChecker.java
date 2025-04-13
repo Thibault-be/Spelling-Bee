@@ -3,6 +3,9 @@ package be.thibault.spellingbee.domain.lettercombination.externaldictionary;
 import be.thibault.spellingbee.config.DictionaryApiClient;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class CommonWordChecker {
 
@@ -12,7 +15,14 @@ public class CommonWordChecker {
         this.dictionaryApiClient = dictionaryApiClient;
     }
 
-    public boolean isCommonWord(String localEntry){
+    private boolean isCommonWord(String localEntry){
         return dictionaryApiClient.entryFoundInExternalDictionary(localEntry);
     }
+
+    public Set<String> filterCommonWordFromLocalEntries(Set<String> localEntries){
+        return localEntries.stream()
+                .filter(this::isCommonWord)
+                .collect(Collectors.toSet());
+    }
+
 }

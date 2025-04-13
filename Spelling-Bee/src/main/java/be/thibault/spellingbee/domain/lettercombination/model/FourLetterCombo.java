@@ -6,7 +6,12 @@ public record FourLetterCombo(String fourLetterCombo) implements MultiLetterComb
 
     public FourLetterCombo {
         if (fourLetterCombo.length() != 4){
-            throw new IllegalArgumentException("Should be a " + LETTER_COMBO_LENGTH + " letter letterCombo");
+            throw new IllegalArgumentException("Should be a " + LETTER_COMBO_LENGTH + " letter fiveLetterCombo");
         }
+    }
+
+    @Override
+    public String getComboAsString() {
+        return this.fourLetterCombo;
     }
 }

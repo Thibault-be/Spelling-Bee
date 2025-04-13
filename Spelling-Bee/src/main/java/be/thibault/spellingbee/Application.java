@@ -30,26 +30,26 @@ public class Application {
 
         LetterCombosProviderImpl provider = new LetterCombosProviderImpl(new LetterCombinationGenerator());
 
-        LetterCombos letterCombos = provider.generateLetterCombos(letters);
+        LetterCombos letterCombos = provider.getLetterCombos(letters);
 
-        LocalDictionary localDictionary = new LocalDictionaryReaderImpl().importDictionary();
-
-
-        LocalDictionaryEntryChecker localDictionaryEntryChecker = new LocalDictionaryEntryChecker(localDictionary);
-
-        Set<FourLetterCombo> fourLetterCombos = letterCombos.fourLetterCombos();
-
-        List<String> localEntries = fourLetterCombos.stream()
-                .map(FourLetterCombo::fourLetterCombo)
-                .filter(localDictionary::containsLetterCombo)
-                .toList();
-
-        DictionaryApiClient dictionaryApiClient = new DictionaryApiClient();
-
-        CommonWordChecker commonWordChecker = new CommonWordChecker(dictionaryApiClient);
-
-        Set<String> externalEntries = localEntries.stream().filter(commonWordChecker::isCommonWord)
-                .collect(Collectors.toSet());
+//        LocalDictionary localDictionary = new LocalDictionaryReaderImpl().importDictionary();
+//
+//
+//        LocalDictionaryEntryChecker localDictionaryEntryChecker = new LocalDictionaryEntryChecker(localDictionary);
+//
+//        //Set<FourLetterCombo> fourLetterCombos = letterCombos.fourLetterCombos();
+//
+//        List<String> localEntries = fourLetterCombos.stream()
+//                .map(FourLetterCombo::fourLetterCombo)
+//                .filter(localDictionary::containsLetterCombo)
+//                .toList();
+//
+//        DictionaryApiClient dictionaryApiClient = new DictionaryApiClient();
+//
+//        CommonWordChecker commonWordChecker = new CommonWordChecker(dictionaryApiClient);
+//
+//        Set<String> externalEntries = localEntries.stream().filter(commonWordChecker::isCommonWord)
+//                .collect(Collectors.toSet());
 
         int x = 6;
 

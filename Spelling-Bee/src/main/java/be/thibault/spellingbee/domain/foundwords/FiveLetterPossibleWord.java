@@ -6,7 +6,7 @@ public record FiveLetterPossibleWord(String fiveLetterSolution) implements Multi
 
     public FiveLetterPossibleWord {
         if (fiveLetterSolution.length() != LETTER_SOLUTION_LENGTH){
-            throw new IllegalArgumentException("Should be a " + LETTER_SOLUTION_LENGTH + " letter letterCombo");
+            throw new IllegalArgumentException("Should be a " + LETTER_SOLUTION_LENGTH + " letter fiveLetterCombo");
         }
     }
 }

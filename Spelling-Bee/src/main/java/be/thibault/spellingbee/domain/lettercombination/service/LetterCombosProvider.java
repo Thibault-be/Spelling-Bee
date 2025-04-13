@@ -5,6 +5,6 @@ import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
 
 public interface LetterCombosProvider {
 
-    LetterCombos generateLetterCombos(LetterSelection letterSelection);
+    LetterCombos getLetterCombos(LetterSelection letterSelection);
 
 }

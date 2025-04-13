@@ -11,12 +11,14 @@ import java.util.Set;
 public class LetterCombinationGenerator {
 
 
-    public Set<String> generateCombinations(LetterSelection letterSelection, int lengthWord){
+    public Set<String> generateCombinations(LetterSelection letterSelection){
         Set<String> result = new HashSet<>();
 
         char[] letters = ArrayUtils.addAll(letterSelection.vowelSelection(), letterSelection.consonantSelection());
 
-        generateCombinationsHelper(letters, "", lengthWord, result);
+        for(int lengthWord = 4; lengthWord < 9; lengthWord++) {
+            generateCombinationsHelper(letters, "", lengthWord, result);
+        }
         return result;
     }
 
