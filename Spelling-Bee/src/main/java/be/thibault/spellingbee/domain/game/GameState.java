@@ -1,10 +1,9 @@
 package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class GameState {
 
@@ -22,11 +21,11 @@ public class GameState {
         this.score = 0;
     }
 
-    public void addGuessToFoundWords(String guess){
+    public void addGuessToFoundWords(String guess) {
         this.foundWords.add(guess);
     }
 
-    public void  addScore(String guess){
+    public void addScore(String guess) {
         int length = guess.length();
 
         this.score += guess.length() - 4;
@@ -38,8 +37,6 @@ public class GameState {
 
 
     }
-
-
 
 
     // Getters
@@ -58,5 +55,29 @@ public class GameState {
 
     public Set<String> getFoundWords() {
         return foundWords;
+    }
+
+    public Set<String> getVowelSelection() {
+        char[] vowelSelection = this.getLetterSelection().vowelSelection();
+        Set<String> vowels = new HashSet<>();
+        for(char c : vowelSelection){
+            vowels.add(String.valueOf(c));
+        }
+        return vowels;
+    }
+
+    public String getCompulsoryLetter() {
+        return String.valueOf(this.getLetterSelection().compulsoryLetter());
+    }
+
+    public Set<String> getConsonantSelection() {
+        char[] consonantSelection = this.getLetterSelection().consonantSelection();
+        Set<String> consonants = new HashSet<>();
+
+        for(char c : consonantSelection){
+            consonants.add(String.valueOf(c));
+        }
+
+        return consonants;
     }
 }
