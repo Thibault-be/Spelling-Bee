@@ -12,7 +12,7 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     private static final char[] CONSONANTS_NO_S = "bcdfghjklmnpqrtvwxyz".toCharArray();
     private static final char[] VOWELS = "aeiou".toCharArray();
-    private static final int MAX_VOWELS = 3;
+    private static final int MAX_VOWELS = 4;
     private static final int MIN_VOWELS = 2;
     private static final int NUMBER_OF_LETTERS = 7;
     private static final Random RANDOM = new Random();
@@ -37,7 +37,7 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
         while (randomIntegers.size() < numberOfLetters) {
             int randomInt = RANDOM.nextInt(0, letterArray.length);
-            if (randomIntegers.contains(randomInt) == false) {
+            if (!randomIntegers.contains(randomInt)) {
                 randomIntegers.add(randomInt);
             }
         }

@@ -1,9 +1,10 @@
 package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class GameState {
 
@@ -28,14 +29,12 @@ public class GameState {
     public void addScore(String guess) {
         int length = guess.length();
 
-        this.score += guess.length() - 4;
+        this.score += guess.length() - 3;
 
         //todo: incorrect, check if all letters were used;
         if (guess.length() == 7) {
             this.score += 7;
         }
-
-
     }
 
 
@@ -77,7 +76,10 @@ public class GameState {
         for(char c : consonantSelection){
             consonants.add(String.valueOf(c));
         }
-
         return consonants;
+    }
+
+    public int getScore(){
+        return this.score;
     }
 }

@@ -10,7 +10,6 @@ import java.util.Set;
 @Component
 public class LetterCombinationGenerator {
 
-
     public Set<String> generateCombinations(LetterSelection letterSelection){
         Set<String> result = new HashSet<>();
 
@@ -21,7 +20,6 @@ public class LetterCombinationGenerator {
         }
         return result;
     }
-
 
     private void generateCombinationsHelper(char[] letters, String runningLetterCombo, int lettersNeeded, Set<String> result ){
         if (lettersNeeded == 0 ){

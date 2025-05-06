@@ -1,16 +1,17 @@
 package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.config.FreemarkerConfig;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.core.ParseException;
-import freemarker.template.*;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,8 +31,8 @@ public class GameController {
     @GetMapping ("/start-game")
     public String startNewGame(){
         GameState gameState = gameService.startNewGame();
-
-        return generateHtml(gameState);
+        Map<String, Object> dataModel = generateDataModel(gameState);
+        return generateHtml(dataModel);
     }
 
     @GetMapping ("/{id}")
@@ -40,29 +41,27 @@ public class GameController {
     }
 
 
-    //post word
-    @PostMapping ("/try-guess")
+    //todo: change in postmapping with proper frontend
+    @GetMapping ("/try-guess")
     public String tryGuess(@RequestParam String guess,
                            @RequestParam String gameId){
+        String verification = gameService.verifyGuess(guess, gameId);
+        Map<String, Object> dataModel = generateDataModel(gameService.getGameById(gameId), verification);
 
-        return gameService.verifyGuess(guess, gameId);
+        return generateHtml(dataModel);
     }
 
-
-    private String generateHtml(GameState gameState){
-
-
+    private String generateHtml(Map<String, Object> dataModel){
         try {
-            Map<String, Object> dataModel = generateDataModel(gameState);
-            Template template = freemarkerConfig.freemarkerConfiguration().getTemplate("spelling-bollie.ftl");
+            Template template = freemarkerConfig.freemarkerConfiguration().getTemplate("post.ftl");
             Writer out = new StringWriter();
             template.process(dataModel, out);
             return out.toString();
         } catch (TemplateException | IOException e){
+            System.out.println(e.getMessage());
             throw new RuntimeException("problem");
         }
     }
-
 
     private Map<String, Object> generateDataModel(GameState gameState){
 
@@ -72,6 +71,16 @@ public class GameController {
         dataModel.put("vowelSelection", gameState.getVowelSelection());
         dataModel.put("consonantSelection", gameState.getConsonantSelection());
         dataModel.put("compulsoryLetter", gameState.getCompulsoryLetter());
+        dataModel.put("possibleWords", gameState.getPossibleWords());
+        dataModel.put("score", gameState.getScore());
+        dataModel.put("letterLayout", gameState.getLetterSelection().getFrontendLetterLayout());
+
+        return dataModel;
+    }
+
+    private Map<String, Object> generateDataModel(GameState gameState, String verifyGuess){
+        Map<String, Object> dataModel = generateDataModel(gameState);
+        dataModel.put("lastGuess", verifyGuess);
 
         return dataModel;
     }
