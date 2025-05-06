@@ -78,7 +78,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void updateGameState(GameState gameState, String guess) {
-        gameState.addScore(guess);
+        gameState.updateScore(guess);
         gameState.addGuessToFoundWords(guess);
+        gameState.determineRanking();
+        //todo: encapsulate all of this in just one method
     }
 }

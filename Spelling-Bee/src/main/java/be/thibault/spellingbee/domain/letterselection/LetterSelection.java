@@ -1,7 +1,5 @@
 package be.thibault.spellingbee.domain.letterselection;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,15 +15,32 @@ public record LetterSelection(char[] vowelSelection,
         //todo: guard rails for compulsory letter
     }
 
-    public List<List<String>> getFrontendLetterLayout(){
+    public List<List<String>> getFrontendLetterLayout() {
 
-        List<List<String>> letterLayout = new ArrayList<>();
-
+        List<String> allLetters = getAllLettersAsList();
         String compulsoryLetter = String.valueOf(this.compulsoryLetter);
 
+        List<String> topRow = List.of(allLetters.get(0), allLetters.get(1));
+        List<String> middleRow = List.of(allLetters.get(2), compulsoryLetter, allLetters.get(3));
+        List<String> bottomRow = List.of(allLetters.get(4), allLetters.get(5));
+
+        return List.of(topRow, middleRow, bottomRow);
+    }
+
+    private List<String> convertToStringList(char[] array) {
+        List<String> strings = new ArrayList<>();
+        for (char c : array) {
+            strings.add(String.valueOf(c));
+        }
+        return strings;
+    }
+
+    private List<String> getAllLettersAsList() {
+
+        List<String> allLetters = new ArrayList<>();
+        String compulsoryLetter = String.valueOf(this.compulsoryLetter);
         List<String> vowels = convertToStringList(vowelSelection);
         List<String> consonants = convertToStringList(consonantSelection);
-        List<String> allLetters = new ArrayList<>();
 
         vowels.stream()
                 .filter(vowel -> !vowel.equals(compulsoryLetter))
@@ -34,22 +49,18 @@ public record LetterSelection(char[] vowelSelection,
                 .filter(consonant -> !consonant.equals(compulsoryLetter))
                 .forEach(allLetters::add);
 
-
-        List<String> topRow = List.of(allLetters.get(0), allLetters.get(1));
-        List<String> middleRow = List.of(allLetters.get(2), compulsoryLetter, allLetters.get(3));
-        List<String> bottomRow = List.of(allLetters.get(4), allLetters.get(5));
-
-        return List.of(topRow, middleRow, bottomRow);
-
+        return allLetters;
     }
 
-    private List<String> convertToStringList(char[] array){
-        List<String> strings = new ArrayList<>();
-        for (char c : array){
-            strings.add(String.valueOf(c));
+    public boolean containsAllSevenLetters(String guess) {
+
+        if (guess.length() < 7) {
+            return false;
         }
-        return strings;
+
+        List<String> guessAsList = Arrays.asList(guess.split(""));
+        List<String> allLetters = getAllLettersAsList();
+
+        return guessAsList.containsAll(allLetters);
     }
-
-
 }

@@ -41,8 +41,7 @@ public class GameController {
     }
 
 
-    //todo: change in postmapping with proper frontend
-    @GetMapping ("/try-guess")
+    @PostMapping ("/try-guess")
     public String tryGuess(@RequestParam String guess,
                            @RequestParam String gameId){
         String verification = gameService.verifyGuess(guess, gameId);
@@ -74,6 +73,7 @@ public class GameController {
         dataModel.put("possibleWords", gameState.getPossibleWords());
         dataModel.put("score", gameState.getScore());
         dataModel.put("letterLayout", gameState.getLetterSelection().getFrontendLetterLayout());
+        dataModel.put("ranking", gameState.getRanking());
 
         return dataModel;
     }
