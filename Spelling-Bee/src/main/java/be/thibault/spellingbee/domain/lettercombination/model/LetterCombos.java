@@ -19,7 +19,11 @@ public class LetterCombos {
         this.fiveLetterCombos = fiveLetterCombos;
     }
 
-    public void addMultiLetterCombo(String letterCombo){
+    public void addMultiLetterCombo(String letterCombo, char compulsoryLetter){
+
+        if (!letterCombo.contains(String.valueOf(compulsoryLetter))){
+            return;
+        }
 
         switch (letterCombo.length()){
             case 4 -> this.fourLetterCombos.add(new FourLetterCombo(letterCombo));
@@ -33,6 +37,4 @@ public class LetterCombos {
         fiveLetterCombos.forEach(combo -> allCombos.add(combo.getComboAsString()));
         return allCombos;
     }
-
-
 }

@@ -43,7 +43,6 @@ public class GameServiceImpl implements GameService {
         gameRepository.saveGame(gameState.getGameId(), gameState);
 
         return gameState;
-
     }
 
     @Override
@@ -53,14 +52,22 @@ public class GameServiceImpl implements GameService {
         Set<String> foundWords = gameState.getFoundWords();
         Set<String> possibleWords = gameState.getPossibleWords();
 
+        if (guess.length() < 4){
+            return "Guess not long enough";
+        }
+
+        String compulsoryLetter = gameState.getCompulsoryLetter();
+        if (!guess.contains(compulsoryLetter)){
+            return "You must use '" + compulsoryLetter + "'";
+        }
+
         if (foundWords.contains(guess)){
-            return "Already found!";
+            return "Already found";
         }
 
         if (possibleWords.contains(guess)){
-            gameState.addScore(guess);
-            gameState.addGuessToFoundWords(guess);
-            return guess;
+            updateGameState(gameState, guess);
+            return "Found word";
         }
         return "Not in list";
     }
@@ -70,7 +77,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void updateGameState() {
-
+    public void updateGameState(GameState gameState, String guess) {
+        gameState.updateScore(guess);
+        gameState.addGuessToFoundWords(guess);
+        gameState.determineRanking();
+        //todo: encapsulate all of this in just one method
     }
 }

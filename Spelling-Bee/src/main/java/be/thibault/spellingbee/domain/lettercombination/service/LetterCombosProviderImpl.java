@@ -23,12 +23,14 @@ public class LetterCombosProviderImpl implements LetterCombosProvider {
 
         Set<String> letterPermutations = this.letterCombinationGenerator.generateCombinations(letterSelection);
 
-        Map<Integer, List<String>> permutationsPerLength = letterPermutations.stream().collect(Collectors.groupingBy(String::length));
+        Map<Integer, List<String>> permutationsPerLength = letterPermutations.stream()
+                .collect(Collectors.groupingBy(String::length));
 
         LetterCombos letterCombos = new LetterCombos();
-        for (int wordLength = 4; wordLength < 9; wordLength++){
+        char compulsoryLetter = letterSelection.compulsoryLetter();
+        for (int wordLength = 4; wordLength < 9; wordLength++) {
             List<String> permutations = permutationsPerLength.get(wordLength);
-            permutations.stream().forEach(letterCombos::addMultiLetterCombo);
+            permutations.forEach(letterCombo -> letterCombos.addMultiLetterCombo(letterCombo, compulsoryLetter));
         }
         return letterCombos;
     }
