@@ -8,6 +8,7 @@ import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import be.thibault.spellingbee.domain.letterselection.LetterSelectionProvider;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.util.Optional;
 import java.util.Set;
@@ -39,7 +40,16 @@ public class GameServiceImpl implements GameService {
         LetterSelection letterSelection = this.letterSelectionProvider.getLetterSelection();
         LetterCombos letterCombos = this.letterCombosProvider.getLetterCombos(letterSelection);
         Set<String> localEntries = this.localDictionaryService.filterLocalEntriesFromCombos(letterCombos);
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+
         Set<String> possibleWords = commonWordChecker.filterCommonWordFromLocalEntries(localEntries);
+
+        stopWatch.stop();
+        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
+
+
 
         GameState gameState = new GameState(letterSelection, possibleWords);
         gameStateRepository.save(gameState);

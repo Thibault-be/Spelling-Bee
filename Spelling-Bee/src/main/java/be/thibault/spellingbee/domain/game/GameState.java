@@ -15,6 +15,7 @@ import java.util.Set;
 public class GameState {
 
     @Id
+    @GeneratedValue (generator = "ID_GENERATOR")
     private Long id;
 
     @Column(name = "LETTER_SELECTION")
