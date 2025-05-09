@@ -1,6 +1,6 @@
 package be.thibault.spellingbee.domain.game;
 
-import be.thibault.spellingbee.adapter.repository.GameStateRepository;
+import be.thibault.spellingbee.adapters.repository.GameStateRepository;
 import be.thibault.spellingbee.domain.lettercombination.externaldictionary.CommonWordChecker;
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
 import be.thibault.spellingbee.domain.lettercombination.service.LetterCombosProvider;
@@ -19,20 +19,17 @@ public class GameServiceImpl implements GameService {
     private final LetterCombosProvider letterCombosProvider;
     private final LocalDictionaryService localDictionaryService;
     private final CommonWordChecker commonWordChecker;
-    private final GameRepository gameRepository;
     private final GameStateRepository gameStateRepository;
 
     public GameServiceImpl(LetterSelectionProvider letterSelectionProvider,
                            LetterCombosProvider letterCombosProvider,
                            LocalDictionaryService localDictionaryService,
                            CommonWordChecker commonWordChecker,
-                           GameRepository gameRepository,
                            GameStateRepository gameStateRepository) {
         this.letterSelectionProvider = letterSelectionProvider;
         this.letterCombosProvider = letterCombosProvider;
         this.localDictionaryService = localDictionaryService;
         this.commonWordChecker = commonWordChecker;
-        this.gameRepository = gameRepository;
         this.gameStateRepository = gameStateRepository;
     }
 
@@ -45,7 +42,6 @@ public class GameServiceImpl implements GameService {
         Set<String> possibleWords = commonWordChecker.filterCommonWordFromLocalEntries(localEntries);
 
         GameState gameState = new GameState(letterSelection, possibleWords);
-        gameRepository.saveGame(gameState.getGameId(), gameState);
         gameStateRepository.save(gameState);
 
         return gameState;
@@ -55,8 +51,6 @@ public class GameServiceImpl implements GameService {
     public String verifyGuess(String guess, String gameId) {
 
         GameState gameState = getGameById(gameId);
-
-        //GameState gameState = this.gameRepository.findByGameId(gameId);
         Set<String> foundWords = gameState.getFoundWords();
         Set<String> possibleWords = gameState.getPossibleWords();
 

@@ -1,7 +1,8 @@
 package be.thibault.spellingbee.domain.lettercombination.externaldictionary;
 
-import be.thibault.spellingbee.config.DictionaryApiClient;
+import be.thibault.spellingbee.configuration.DictionaryApiClient;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.Set;
 import java.util.stream.Collectors;

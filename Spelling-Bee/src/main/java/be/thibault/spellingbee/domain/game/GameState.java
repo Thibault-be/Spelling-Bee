@@ -1,13 +1,12 @@
 package be.thibault.spellingbee.domain.game;
 
-import be.thibault.spellingbee.adapter.repository.converters.LetterSelectionConverter;
+import be.thibault.spellingbee.adapters.repository.converters.LetterSelectionConverter;
 import be.thibault.spellingbee.domain.enums.Ranking;
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 //todo: move businesslogic-y methods outside of this class
 
@@ -16,7 +15,7 @@ import java.util.UUID;
 public class GameState {
 
     @Id
-    private String id;
+    private Long id;
 
     @Column(name = "LETTER_SELECTION")
     @Convert(converter= LetterSelectionConverter.class)
@@ -44,7 +43,6 @@ public class GameState {
     public GameState(){}
 
     public GameState(LetterSelection letterSelection, Set<String> possibleWords) {
-        this.id = UUID.randomUUID().toString();
         this.letterSelection = letterSelection;
         this.possibleWords = possibleWords;
         this.foundWords = new HashSet<>();
@@ -116,7 +114,7 @@ public class GameState {
         this.ranking = newRank;
     }
 
-    public String getGameId() {
+    public Long getGameId() {
         return id;
     }
 

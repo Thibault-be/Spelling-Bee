@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.adapter.repository.converters;
+package be.thibault.spellingbee.adapters.repository.converters;
 
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import jakarta.persistence.AttributeConverter;
