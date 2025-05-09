@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.config;
+package be.thibault.spellingbee.configuration;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

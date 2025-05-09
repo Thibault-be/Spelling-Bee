@@ -1,4 +1,4 @@
-package be.thibault.spellingbee.config;
+package be.thibault.spellingbee.configuration;
 
 
 import freemarker.template.Configuration;

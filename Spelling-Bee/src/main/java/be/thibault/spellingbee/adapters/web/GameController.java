@@ -1,7 +1,8 @@
-package be.thibault.spellingbee.domain.game;
+package be.thibault.spellingbee.adapters.web;
 
-import be.thibault.spellingbee.config.FreemarkerConfig;
-import be.thibault.spellingbee.domain.letterselection.LetterSelection;
+import be.thibault.spellingbee.configuration.FreemarkerConfig;
+import be.thibault.spellingbee.domain.game.GameService;
+import be.thibault.spellingbee.domain.game.GameState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
