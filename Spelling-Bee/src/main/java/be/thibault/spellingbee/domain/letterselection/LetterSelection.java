@@ -44,7 +44,7 @@ public class LetterSelection implements Serializable {
 
     public List<List<String>> getFrontendLetterLayout() {
 
-        List<String> allLetters = getAllLettersAsList();
+        List<String> allLetters = getAllOptionalLettersAsList();
         String compulsoryLetter = String.valueOf(this.compulsoryLetter);
 
         List<String> topRow = List.of(allLetters.get(0), allLetters.get(1));
@@ -62,7 +62,7 @@ public class LetterSelection implements Serializable {
         return strings;
     }
 
-    private List<String> getAllLettersAsList() {
+    public List<String> getAllOptionalLettersAsList() {
 
         List<String> allLetters = new ArrayList<>();
         String compulsoryLetter = String.valueOf(this.compulsoryLetter);
@@ -86,14 +86,14 @@ public class LetterSelection implements Serializable {
         }
 
         List<String> guessAsList = Arrays.asList(guess.split(""));
-        List<String> allLetters = getAllLettersAsList();
+        List<String> allLetters = getAllOptionalLettersAsList();
 
         return guessAsList.containsAll(allLetters);
     }
 
     @Override
     public String toString() {
-        List<String> allLetters = getAllLettersAsList();
+        List<String> allLetters = getAllOptionalLettersAsList();
         StringBuilder stringBuilder = new StringBuilder();
         String compulsory = String.valueOf(this.compulsoryLetter);
 

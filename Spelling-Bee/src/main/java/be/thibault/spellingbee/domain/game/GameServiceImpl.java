@@ -38,12 +38,13 @@ public class GameServiceImpl implements GameService {
     public GameState startNewGame() {
 
         LetterSelection letterSelection = this.letterSelectionProvider.getLetterSelection();
-        LetterCombos letterCombos = this.letterCombosProvider.getLetterCombos(letterSelection);
-        Set<String> localEntries = this.localDictionaryService.filterLocalEntriesFromCombos(letterCombos);
+        //LetterCombos letterCombos = this.letterCombosProvider.getLetterCombos(letterSelection);
+        //Set<String> localEntries = this.localDictionaryService.filterLocalEntriesFromCombos(letterCombos);
+        Set<String> localEntries = this.localDictionaryService.localEntriesFromLetterSelection(letterSelection);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-
+        //todo: something going wrong here
         Set<String> possibleWords = commonWordChecker.filterCommonWordFromLocalEntries(localEntries);
 
         stopWatch.stop();

@@ -1,9 +1,12 @@
 package be.thibault.spellingbee.domain.localdictionary;
 
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
+import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class LocalDictionaryService {
@@ -16,7 +19,7 @@ public class LocalDictionaryService {
         this.localDictionaryEntryChecker = localDictionaryEntryChecker;
     }
 
-    public LocalDictionary getLocalDictionary(){
+    public LocalDictionary getLocalDictionary() {
         return this.localDictionaryReader.getLocalDictionary();
     }
 
@@ -26,7 +29,22 @@ public class LocalDictionaryService {
 
     }
 
+    public Set<String> localEntriesFromLetterSelection(LetterSelection letterSelection) {
 
+        LocalDictionary localDictionary = getLocalDictionary();
+
+        List<String> allLetters = letterSelection.getAllOptionalLettersAsList();
+        String compulsoryLetter = String.valueOf(letterSelection.getCompulsoryLetter());
+        allLetters.add(compulsoryLetter);
+
+        return localDictionary.entries().parallelStream()
+                .filter(entry -> entry.contains(compulsoryLetter))
+                .filter(entry -> entry.length() >= 4)
+                .filter(entry -> entry.chars().allMatch(c -> allLetters.contains(Character.toString(c))))
+                .collect(Collectors.toSet());
 
 
     }
+
+
+}
