@@ -2,23 +2,47 @@ package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.domain.enums.Ranking;
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+//todo: move businesslogic-y methods outside of this class
+
+@Entity
+@Table(name = "GAMESTATE")
 public class GameState {
 
-    private final String gameId;
-    private final LetterSelection letterSelection;
-    private final Set<String> possibleWords;
-    private final Set<String> foundWords;
+    @Id
+    private String id;
+
+    @Column(name = "LETTER_SELECTION")
+    private LetterSelection letterSelection;
+
+    @ElementCollection
+    @CollectionTable(name = "POSSIBLE_WORDS")
+    private Set<String> possibleWords;
+
+    @ElementCollection
+    @CollectionTable(name = "FOUND_WORDS")
+    @Column(name = "FOUND_WORD")
+    private Set<String> foundWords;
+
+    @Column(name = "SCORE")
     private int score;
+
+    @Column(name = "MAXIMUM_SCORE")
     private int maxScore;
+
+    @Column(name = "RANKING")
+    @Enumerated(EnumType.STRING)
     private Ranking ranking;
 
+    public GameState(){}
+
     public GameState(LetterSelection letterSelection, Set<String> possibleWords) {
-        this.gameId = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.letterSelection = letterSelection;
         this.possibleWords = possibleWords;
         this.foundWords = new HashSet<>();
@@ -91,7 +115,7 @@ public class GameState {
     }
 
     public String getGameId() {
-        return gameId;
+        return id;
     }
 
     public LetterSelection getLetterSelection() {
@@ -107,7 +131,7 @@ public class GameState {
     }
 
     public Set<String> getVowelSelection() {
-        char[] vowelSelection = this.getLetterSelection().vowelSelection();
+        char[] vowelSelection = this.getLetterSelection().getVowelSelection();
         Set<String> vowels = new HashSet<>();
         for (char c : vowelSelection) {
             vowels.add(String.valueOf(c));
@@ -116,11 +140,11 @@ public class GameState {
     }
 
     public String getCompulsoryLetter() {
-        return String.valueOf(this.getLetterSelection().compulsoryLetter());
+        return String.valueOf(this.getLetterSelection().getCompulsoryLetter());
     }
 
     public Set<String> getConsonantSelection() {
-        char[] consonantSelection = this.getLetterSelection().consonantSelection();
+        char[] consonantSelection = this.getLetterSelection().getConsonantSelection();
         Set<String> consonants = new HashSet<>();
 
         for (char c : consonantSelection) {

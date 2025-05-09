@@ -1,5 +1,6 @@
 package be.thibault.spellingbee.domain.game;
 
+import be.thibault.spellingbee.adapter.repository.GameStateRepository;
 import be.thibault.spellingbee.domain.lettercombination.externaldictionary.CommonWordChecker;
 import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
 import be.thibault.spellingbee.domain.lettercombination.service.LetterCombosProvider;
@@ -18,17 +19,20 @@ public class GameServiceImpl implements GameService {
     private final LocalDictionaryService localDictionaryService;
     private final CommonWordChecker commonWordChecker;
     private final GameRepository gameRepository;
+    private final GameStateRepository gameStateRepository;
 
     public GameServiceImpl(LetterSelectionProvider letterSelectionProvider,
                            LetterCombosProvider letterCombosProvider,
                            LocalDictionaryService localDictionaryService,
                            CommonWordChecker commonWordChecker,
-                           GameRepository gameRepository) {
+                           GameRepository gameRepository,
+                           GameStateRepository gameStateRepository) {
         this.letterSelectionProvider = letterSelectionProvider;
         this.letterCombosProvider = letterCombosProvider;
         this.localDictionaryService = localDictionaryService;
         this.commonWordChecker = commonWordChecker;
         this.gameRepository = gameRepository;
+        this.gameStateRepository = gameStateRepository;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class GameServiceImpl implements GameService {
 
         GameState gameState = new GameState(letterSelection, possibleWords);
         gameRepository.saveGame(gameState.getGameId(), gameState);
+        gameStateRepository.save(gameState);
 
         return gameState;
     }
@@ -52,27 +57,27 @@ public class GameServiceImpl implements GameService {
         Set<String> foundWords = gameState.getFoundWords();
         Set<String> possibleWords = gameState.getPossibleWords();
 
-        if (guess.length() < 4){
+        if (guess.length() < 4) {
             return "Guess not long enough";
         }
 
         String compulsoryLetter = gameState.getCompulsoryLetter();
-        if (!guess.contains(compulsoryLetter)){
+        if (!guess.contains(compulsoryLetter)) {
             return "You must use '" + compulsoryLetter + "'";
         }
 
-        if (foundWords.contains(guess)){
+        if (foundWords.contains(guess)) {
             return "Already found";
         }
 
-        if (possibleWords.contains(guess)){
+        if (possibleWords.contains(guess)) {
             updateGameState(gameState, guess);
             return "Found word";
         }
         return "Not in list";
     }
 
-    public GameState getGameById(String id){
+    public GameState getGameById(String id) {
         return gameRepository.findByGameId(id);
     }
 

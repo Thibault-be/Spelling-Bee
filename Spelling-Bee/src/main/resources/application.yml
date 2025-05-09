@@ -1,6 +1,14 @@
 spring:
   application:
     name: Spelling-Bee
+  datasource:
+    url: jdbc:h2:mem:spelling
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
 api:
   dictionary:
     basepath: "https://api.dictionaryapi.dev/api/v2/entries/en/"
