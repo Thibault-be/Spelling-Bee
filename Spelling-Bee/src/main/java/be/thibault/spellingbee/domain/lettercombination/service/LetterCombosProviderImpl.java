@@ -27,7 +27,7 @@ public class LetterCombosProviderImpl implements LetterCombosProvider {
                 .collect(Collectors.groupingBy(String::length));
 
         LetterCombos letterCombos = new LetterCombos();
-        char compulsoryLetter = letterSelection.compulsoryLetter();
+        char compulsoryLetter = letterSelection.getCompulsoryLetter();
         for (int wordLength = 4; wordLength < 9; wordLength++) {
             List<String> permutations = permutationsPerLength.get(wordLength);
             permutations.forEach(letterCombo -> letterCombos.addMultiLetterCombo(letterCombo, compulsoryLetter));

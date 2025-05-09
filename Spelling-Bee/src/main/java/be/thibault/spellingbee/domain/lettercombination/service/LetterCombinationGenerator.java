@@ -13,7 +13,7 @@ public class LetterCombinationGenerator {
     public Set<String> generateCombinations(LetterSelection letterSelection){
         Set<String> result = new HashSet<>();
 
-        char[] letters = ArrayUtils.addAll(letterSelection.vowelSelection(), letterSelection.consonantSelection());
+        char[] letters = ArrayUtils.addAll(letterSelection.getVowelSelection(), letterSelection.getConsonantSelection());
 
         for(int lengthWord = 4; lengthWord < 9; lengthWord++) {
             generateCombinationsHelper(letters, "", lengthWord, result);
