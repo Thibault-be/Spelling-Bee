@@ -1,18 +1,40 @@
 package be.thibault.spellingbee.domain.letterselection;
 
+import jakarta.persistence.Embeddable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record LetterSelection(char[] vowelSelection,
-                              char[] consonantSelection,
-                              char compulsoryLetter) {
+//todo: move businesslogic-y methods outside of this record
 
-    public LetterSelection {
+@Embeddable
+public class LetterSelection implements Serializable {
+
+    private char[] vowelSelection;
+    private char[] consonantSelection;
+    private char compulsoryLetter;
+
+    public LetterSelection(char[] vowelSelection,
+                           char[] consonantSelection,
+                           char compulsoryLetter) {
         if (vowelSelection.length + consonantSelection.length != 7) {
             throw new IllegalArgumentException("not enough letters were provided");
         }
         //todo: guard rails for compulsory letter
+    }
+
+    public char[] getVowelSelection() {
+        return vowelSelection;
+    }
+
+    public char[] getConsonantSelection() {
+        return consonantSelection;
+    }
+
+    public char getCompulsoryLetter() {
+        return compulsoryLetter;
     }
 
     public List<List<String>> getFrontendLetterLayout() {
