@@ -112,11 +112,18 @@ public class LetterSelection implements Serializable {
 
         char[] charArray = dbString.toCharArray();
         char compulsoryLetter = charArray[0];
+        String compulsoryLetterString = String.valueOf(compulsoryLetter);
 
         List<String> vowels = List.of("a", "e", "i", "o", "u");
 
         List<String> vowelSelection = new ArrayList<>();
         List<String> consonantSelection = new ArrayList<>();
+
+        if (vowels.contains(compulsoryLetterString)){
+            vowelSelection.add(compulsoryLetterString);
+        } else {
+            consonantSelection.add(compulsoryLetterString);
+        }
 
         for (int i = 1; i < charArray.length; i++) {
             String letter = String.valueOf(charArray[i]);

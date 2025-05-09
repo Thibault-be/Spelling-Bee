@@ -1,5 +1,6 @@
 package be.thibault.spellingbee.domain.game;
 
+import be.thibault.spellingbee.adapter.repository.converters.LetterSelectionConverter;
 import be.thibault.spellingbee.domain.enums.Ranking;
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class GameState {
     private String id;
 
     @Column(name = "LETTER_SELECTION")
+    @Convert(converter= LetterSelectionConverter.class)
     private LetterSelection letterSelection;
 
     @ElementCollection

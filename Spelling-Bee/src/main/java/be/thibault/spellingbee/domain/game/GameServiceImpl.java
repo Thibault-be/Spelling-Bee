@@ -9,6 +9,7 @@ import be.thibault.spellingbee.domain.letterselection.LetterSelectionProvider;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -53,7 +54,9 @@ public class GameServiceImpl implements GameService {
     @Override
     public String verifyGuess(String guess, String gameId) {
 
-        GameState gameState = this.gameRepository.findByGameId(gameId);
+        GameState gameState = getGameById(gameId);
+
+        //GameState gameState = this.gameRepository.findByGameId(gameId);
         Set<String> foundWords = gameState.getFoundWords();
         Set<String> possibleWords = gameState.getPossibleWords();
 
@@ -63,7 +66,7 @@ public class GameServiceImpl implements GameService {
 
         String compulsoryLetter = gameState.getCompulsoryLetter();
         if (!guess.contains(compulsoryLetter)) {
-            return "You must use '" + compulsoryLetter + "'";
+            return "You must use letter '" + compulsoryLetter + "'";
         }
 
         if (foundWords.contains(guess)) {
@@ -72,13 +75,16 @@ public class GameServiceImpl implements GameService {
 
         if (possibleWords.contains(guess)) {
             updateGameState(gameState, guess);
+            this.gameStateRepository.save(gameState);
             return "Found word";
         }
         return "Not in list";
+
     }
 
     public GameState getGameById(String id) {
-        return gameRepository.findByGameId(id);
+        Optional<GameState> gameStateOptional = this.gameStateRepository.findById(id);
+        return gameStateOptional.orElseThrow();
     }
 
     @Override
