@@ -147,4 +147,27 @@ public class LetterSelection implements Serializable {
 
         return new LetterSelection(vowelArray, consonantArray, compulsoryLetter);
     }
+
+    @Override
+    public boolean equals(Object o){
+
+        if (this == o) return true;
+
+        if (o instanceof LetterSelection letterSelection){
+
+            List<String> objectLetters = letterSelection.getAllOptionalLettersAsList();
+            objectLetters.add(String.valueOf(letterSelection.compulsoryLetter));
+            objectLetters.sort(String::compareTo);
+
+            List<String> thisLetters = this.getAllOptionalLettersAsList();
+            thisLetters.add(String.valueOf(letterSelection.compulsoryLetter));
+            thisLetters.sort(String::compareTo);
+
+            boolean equals = objectLetters.equals(thisLetters);
+
+            return objectLetters.equals(thisLetters);
+
+        }
+        return false;
+    }
 }
