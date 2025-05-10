@@ -12,21 +12,20 @@ import java.util.stream.Collectors;
 public class LocalDictionaryReaderImpl implements LocalDictionaryReader {
 
     //todo: to be externalised
-    private static final String DICTIONARY_LOCATION = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/words_alpha.txt";
-    private final LocalDictionary localDictionary;
+    public static final String LARGER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/english.txt";
+    public static final String SMALLLER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/usa-english.txt";
 
     public LocalDictionaryReaderImpl(){
-        this.localDictionary= importDictionary();
     }
 
     @Override
-    public LocalDictionary getLocalDictionary(){
-        return this.localDictionary;
+    public LocalDictionary getLocalDictionary(String dictionary){
+        return importDictionary(dictionary);
     }
 
-    private LocalDictionary importDictionary() {
+    private LocalDictionary importDictionary(String dictionary) {
 
-        Path path = Path.of(DICTIONARY_LOCATION);
+        Path path = Path.of(dictionary);
 
         //todo: convert to try with resources
         if (Files.exists(path)) {

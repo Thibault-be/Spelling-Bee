@@ -2,6 +2,6 @@ package be.thibault.spellingbee.domain.localdictionary;
 
 public interface LocalDictionaryReader {
 
-    LocalDictionary getLocalDictionary();
+    LocalDictionary getLocalDictionary(String dictionary);
 
 }
