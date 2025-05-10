@@ -1,14 +1,13 @@
 package be.thibault.spellingbee.domain.game;
 
 import be.thibault.spellingbee.adapters.repository.GameStateRepository;
-import be.thibault.spellingbee.domain.lettercombination.externaldictionary.CommonWordChecker;
-import be.thibault.spellingbee.domain.lettercombination.model.LetterCombos;
-import be.thibault.spellingbee.domain.lettercombination.service.LetterCombosProvider;
+import be.thibault.spellingbee.domain.externaldictionary.CommonWordChecker;
+
 import be.thibault.spellingbee.domain.letterselection.LetterSelection;
 import be.thibault.spellingbee.domain.letterselection.LetterSelectionProvider;
+import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryComparison;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 
 import java.util.Optional;
 import java.util.Set;
@@ -17,18 +16,15 @@ import java.util.Set;
 public class GameServiceImpl implements GameService {
 
     private final LetterSelectionProvider letterSelectionProvider;
-    private final LetterCombosProvider letterCombosProvider;
     private final LocalDictionaryService localDictionaryService;
     private final CommonWordChecker commonWordChecker;
     private final GameStateRepository gameStateRepository;
 
     public GameServiceImpl(LetterSelectionProvider letterSelectionProvider,
-                           LetterCombosProvider letterCombosProvider,
                            LocalDictionaryService localDictionaryService,
                            CommonWordChecker commonWordChecker,
                            GameStateRepository gameStateRepository) {
         this.letterSelectionProvider = letterSelectionProvider;
-        this.letterCombosProvider = letterCombosProvider;
         this.localDictionaryService = localDictionaryService;
         this.commonWordChecker = commonWordChecker;
         this.gameStateRepository = gameStateRepository;
@@ -38,20 +34,11 @@ public class GameServiceImpl implements GameService {
     public GameState startNewGame() {
 
         LetterSelection letterSelection = this.letterSelectionProvider.getLetterSelection();
-        LetterCombos letterCombos = this.letterCombosProvider.getLetterCombos(letterSelection);
-        Set<String> localEntries = this.localDictionaryService.filterLocalEntriesFromCombos(letterCombos);
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        LocalDictionaryComparison localDictionaryComparison = this.localDictionaryService.getLocalDictionaryComparison(letterSelection);
 
+        // todo: implement again later Set<String> possibleWords = commonWordChecker.filterCommonWordFromLocalEntries(entriesFoundAndNotFoundInMitDictionary.get(1));
 
-        Set<String> possibleWords = commonWordChecker.filterCommonWordFromLocalEntries(localEntries);
-
-        stopWatch.stop();
-        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
-
-
-
-        GameState gameState = new GameState(letterSelection, possibleWords);
+        GameState gameState = new GameState(letterSelection, localDictionaryComparison.matchingEntries());
         gameStateRepository.save(gameState);
 
         return gameState;
