@@ -15,8 +15,6 @@ public class LocalDictionaryReaderImpl implements LocalDictionaryReader {
     public static final String LARGER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/english.txt";
     public static final String SMALLLER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/usa-english.txt";
 
-    public LocalDictionaryReaderImpl(){
-    }
 
     @Override
     public LocalDictionary getLocalDictionary(String dictionary){

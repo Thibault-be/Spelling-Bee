@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     private static final String ALL_VOWELS = "aeiou";
-    private static final int NUMBER_OF_LETTERS = 7;
     private static final Random RANDOM = new Random();
     private final LocalDictionaryReader localDictionaryReader;
     private final GameStateRepository gameStateRepository;
@@ -45,6 +44,10 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
         return letterSelection.orElseThrow();
     }
 
+    private boolean hasSevenDifferentLetters(String entry) {
+        return entry.chars().distinct().count() == 7;
+    }
+
     private LetterSelection getLetterSelectionFromWord(String sevenLetterWord) {
         char compulsoryLetter = determineCompulsoryLetter(sevenLetterWord);
 
@@ -66,10 +69,6 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
         char[] consonantSelection = consonantBuilder.toString().toCharArray();
 
         return new LetterSelection(vowelSelection, consonantSelection, compulsoryLetter);
-    }
-
-    private boolean hasSevenDifferentLetters(String entry) {
-        return entry.chars().distinct().count() == 7;
     }
 
     private char determineCompulsoryLetter(String entry) {

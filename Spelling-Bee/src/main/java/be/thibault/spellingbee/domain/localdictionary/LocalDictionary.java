@@ -4,14 +4,7 @@ import java.util.Set;
 
 public record LocalDictionary(Set<String> entries) {
 
-    public boolean containsLetterCombo(String letterCombo){
-
-        return this.entries.contains(letterCombo);
-    }
-
-
     public boolean contains(String entry){
         return this.entries.contains(entry);
     }
-
 }
