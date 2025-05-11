@@ -3,9 +3,11 @@ package be.thibault.spellingbee.adapters.web;
 import be.thibault.spellingbee.configuration.FreemarkerConfig;
 import be.thibault.spellingbee.domain.game.GameService;
 import be.thibault.spellingbee.domain.game.GameState;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -14,32 +16,27 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping ("/spelling-bollie")
 public class GameController {
 
+    private static final Logger log = LoggerFactory.getLogger(GameController.class);
     private final GameService gameService;
-    private final ObjectMapper objectMapper;
     private final FreemarkerConfig freemarkerConfig;
 
     public GameController(GameService gameService, FreemarkerConfig freemarkerConfig) {
         this.gameService = gameService;
-        this.objectMapper = new ObjectMapper();
         this.freemarkerConfig = freemarkerConfig;
     }
 
     @GetMapping ("/start-game")
     public String startNewGame(){
+        log.info("Starting a new game");
         GameState gameState = gameService.startNewGame();
         Map<String, Object> dataModel = generateDataModel(gameState);
         return generateHtml(dataModel);
     }
-
-    @GetMapping ("/{id}")
-    public GameState getGameById(@PathVariable String id){
-        return gameService.getGameById(id);
-    }
-
 
     @PostMapping ("/try-guess")
     public String tryGuess(@RequestParam String guess,
@@ -57,7 +54,6 @@ public class GameController {
             template.process(dataModel, out);
             return out.toString();
         } catch (TemplateException | IOException e){
-            System.out.println(e.getMessage());
             throw new RuntimeException("problem");
         }
     }

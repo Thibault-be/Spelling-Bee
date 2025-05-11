@@ -49,16 +49,9 @@ public class GameState {
         this.foundWords = new HashSet<>();
         this.score = 0;
         this.maxScore = determineMaxScore();
-        determineRanking();
+        this.ranking = Ranking.BEGINNER;
     }
 
-    public void addGuessToFoundWords(String guess) {
-        this.foundWords.add(guess);
-    }
-
-    public void updateScore(String guess) {
-        this.score += determineWordScore(guess);
-    }
 
     public int determineWordScore(String answer) {
         int length = answer.length();
@@ -78,6 +71,7 @@ public class GameState {
         return guessScore;
     }
 
+    //todo - move to game serve and then set the max score
     private int determineMaxScore() {
         this.possibleWords
                 .forEach(word -> this.maxScore += determineWordScore(word));
@@ -85,35 +79,10 @@ public class GameState {
         return this.maxScore;
     }
 
-    public void determineRanking() {
-
-        double percentage = ((double) this.score / (double) this.maxScore) * 100;
-        Ranking newRank = null;
-
-        if (percentage == 100) {
-            newRank = Ranking.QUEEN_BEE;
-        } else if (percentage < 2) {
-            newRank = Ranking.BEGINNER;
-        } else if (percentage < 5) {
-            newRank = Ranking.GOOD_START;
-        } else if (percentage < 8) {
-            newRank = Ranking.MOVING_UP;
-        } else if (percentage < 15) {
-            newRank = Ranking.GOOD;
-        } else if (percentage < 25) {
-            newRank = Ranking.SOLID;
-        } else if (percentage < 40) {
-            newRank = Ranking.NICE;
-        } else if (percentage < 51) {
-            newRank = Ranking.GREAT;
-        } else if (percentage < 71) {
-            newRank = Ranking.AMAZING;
-        } else {
-            newRank = Ranking.GENIUS;
-        }
-
-        this.ranking = newRank;
+    public void setMaxScore(int newMaxScore){
+        this.maxScore = newMaxScore;
     }
+
 
     public Long getGameId() {
         return id;
@@ -130,6 +99,7 @@ public class GameState {
     public Set<String> getFoundWords() {
         return foundWords;
     }
+
 
     public Set<String> getVowelSelection() {
         char[] vowelSelection = this.getLetterSelection().getVowelSelection();
@@ -158,7 +128,19 @@ public class GameState {
         return this.score;
     }
 
+    public void setScore(int score){
+        this.score = score;
+    }
+
     public Ranking getRanking() {
         return ranking;
+    }
+
+    public int getMaxScore(){
+        return this.maxScore;
+    }
+
+    public void setRanking(Ranking ranking){
+        this.ranking = ranking;
     }
 }
