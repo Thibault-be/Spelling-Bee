@@ -36,12 +36,17 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
         Set<String> entries = largerDictionary.entries();
 
         Optional<LetterSelection> letterSelection = entries.stream()
+                .filter(this::doesNotContainLetterS)
                 .filter(this::hasSevenDifferentLetters)
                 .map(this::getLetterSelectionFromWord)
                 .filter(this::isAvailable)
                 .findFirst();
 
         return letterSelection.orElseThrow();
+    }
+
+    private boolean doesNotContainLetterS(String entry){
+        return !entry.contains("s");
     }
 
     private boolean hasSevenDifferentLetters(String entry) {
