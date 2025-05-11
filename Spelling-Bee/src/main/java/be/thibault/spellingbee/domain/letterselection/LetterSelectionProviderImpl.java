@@ -7,7 +7,10 @@ import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReader;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReaderImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,7 +29,6 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     @Override
     public LetterSelection getLetterSelection() {
-        LetterSelection newLetterSelectionFromDictionary = getNewLetterSelectionFromDictionary();
         return getNewLetterSelectionFromDictionary();
     }
 
@@ -78,18 +80,15 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     }
 
     //todo: refactor. Now we are loading all gamestates. This method probably shouldn't be here.
-    // there is something really wrong here
     private boolean isAvailable(LetterSelection letterSelection) {
         List<GameState> allGameStates = this.gameStateRepository.findAll();
         Set<LetterSelection> usedSelections = allGameStates.stream()
                 .map(GameState::getLetterSelection)
                 .collect(Collectors.toSet());
 
-
         if (usedSelections.isEmpty()) return true;
 
         for (LetterSelection usedSelection : usedSelections) {
-            boolean b = hasSameLetters(usedSelection, letterSelection);
             if (hasSameLetters(usedSelection, letterSelection)) {
                 return false;
             }
@@ -104,13 +103,6 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
         List<String> newLetters = newSelection.getAllOptionalLettersAsList();
         newLetters.add(Character.toString(newSelection.getCompulsoryLetter()));
-
-        List<String> differentLetters = new ArrayList<>();
-        for (String newLetter : newLetters){
-            if (!usedLetters.contains(newLetter)){
-                differentLetters.add(newLetter);
-            }
-        }
 
         Set<String> mismatch = newLetters.stream()
                 .filter(x -> !usedLetters.contains(x))
