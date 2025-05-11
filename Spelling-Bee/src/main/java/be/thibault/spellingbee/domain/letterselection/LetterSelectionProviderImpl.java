@@ -1,63 +1,112 @@
 package be.thibault.spellingbee.domain.letterselection;
 
-import org.apache.commons.lang3.ArrayUtils;
+import be.thibault.spellingbee.adapters.repository.GameStateRepository;
+import be.thibault.spellingbee.domain.game.GameState;
+import be.thibault.spellingbee.domain.localdictionary.LocalDictionary;
+import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReader;
+import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReaderImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
-    private static final char[] CONSONANTS_NO_S = "bcdfghjklmnpqrtvwxyz".toCharArray();
-    private static final char[] VOWELS = "aeiou".toCharArray();
-    private static final int MAX_VOWELS = 4;
-    private static final int MIN_VOWELS = 2;
-    private static final int NUMBER_OF_LETTERS = 7;
+    private static final String ALL_VOWELS = "aeiou";
     private static final Random RANDOM = new Random();
+    private final LocalDictionaryReader localDictionaryReader;
+    private final GameStateRepository gameStateRepository;
 
+    public LetterSelectionProviderImpl(LocalDictionaryReader localDictionaryReader, GameStateRepository gameStateRepository) {
+        this.localDictionaryReader = localDictionaryReader;
+        this.gameStateRepository = gameStateRepository;
+    }
 
     @Override
     public LetterSelection getLetterSelection() {
+        return getNewLetterSelectionFromDictionary();
+    }
 
-        int numberOfVowels = RANDOM.nextInt(MIN_VOWELS, MAX_VOWELS);
-        char[] vowelSelection = getLetters(numberOfVowels, VOWELS);
+    private LetterSelection getNewLetterSelectionFromDictionary() {
+        LocalDictionary largerDictionary = this.localDictionaryReader.getLocalDictionary(LocalDictionaryReaderImpl.LARGER_DICTIONARY);
+        Set<String> entries = largerDictionary.entries();
 
-        int numberOfConsonants = NUMBER_OF_LETTERS - numberOfVowels;
-        char[] consonantSelection = getLetters(numberOfConsonants, CONSONANTS_NO_S);
-        char compulsoryLetter = determineCompulsoryLetter(vowelSelection, consonantSelection);
+        Optional<LetterSelection> letterSelection = entries.stream()
+                .filter(this::hasSevenDifferentLetters)
+                .map(this::getLetterSelectionFromWord)
+                .filter(this::isAvailable)
+                .findFirst();
+
+        return letterSelection.orElseThrow();
+    }
+
+    private boolean hasSevenDifferentLetters(String entry) {
+        return entry.chars().distinct().count() == 7;
+    }
+
+    private LetterSelection getLetterSelectionFromWord(String sevenLetterWord) {
+        char compulsoryLetter = determineCompulsoryLetter(sevenLetterWord);
+
+        StringBuilder vowelBuilder = new StringBuilder();
+        StringBuilder consonantBuilder = new StringBuilder();
+
+        sevenLetterWord.chars()
+                .distinct()
+                .forEach(c -> {
+                    if (ALL_VOWELS.contains(Character.toString(c))) {
+                        vowelBuilder.append(Character.toString(c));
+                    } else {
+                        consonantBuilder.append(Character.toString(c));
+                    }
+                });
+
+
+        char[] vowelSelection = vowelBuilder.toString().toCharArray();
+        char[] consonantSelection = consonantBuilder.toString().toCharArray();
 
         return new LetterSelection(vowelSelection, consonantSelection, compulsoryLetter);
     }
 
-    private char[] getLetters(int numberOfLetters, char[] letterArray) {
+    private char determineCompulsoryLetter(String entry) {
 
-        List<Integer> randomIntegers = new ArrayList<>();
+        int randomInt = RANDOM.nextInt(7);
+        return entry.toCharArray()[randomInt];
 
-        while (randomIntegers.size() < numberOfLetters) {
-            int randomInt = RANDOM.nextInt(0, letterArray.length);
-            if (!randomIntegers.contains(randomInt)) {
-                randomIntegers.add(randomInt);
+    }
+
+    //todo: refactor. Now we are loading all gamestates. This method probably shouldn't be here.
+    private boolean isAvailable(LetterSelection letterSelection) {
+        List<GameState> allGameStates = this.gameStateRepository.findAll();
+        Set<LetterSelection> usedSelections = allGameStates.stream()
+                .map(GameState::getLetterSelection)
+                .collect(Collectors.toSet());
+
+        if (usedSelections.isEmpty()) return true;
+
+        for (LetterSelection usedSelection : usedSelections) {
+            if (hasSameLetters(usedSelection, letterSelection)) {
+                return false;
             }
         }
-
-        char[] letters = new char[numberOfLetters];
-        int count = 0;
-        for (Integer i : randomIntegers) {
-            letters[count] = letterArray[i];
-            count++;
-        }
-        return letters;
+        return true;
     }
 
+    private boolean hasSameLetters(LetterSelection used, LetterSelection newSelection) {
 
-    private char determineCompulsoryLetter(char[] vowelSelection, char[] consonantSelection) {
+        List<String> usedLetters = used.getAllOptionalLettersAsList();
+        usedLetters.add(Character.toString(used.getCompulsoryLetter()));
 
-        char[] letters = ArrayUtils.addAll(vowelSelection, consonantSelection);
-        int randomIndex = RANDOM.nextInt(0, NUMBER_OF_LETTERS);
+        List<String> newLetters = newSelection.getAllOptionalLettersAsList();
+        newLetters.add(Character.toString(newSelection.getCompulsoryLetter()));
 
-        return letters[randomIndex];
+        Set<String> mismatch = newLetters.stream()
+                .filter(x -> !usedLetters.contains(x))
+                .collect(Collectors.toSet());
+
+        return mismatch.isEmpty();
     }
-
 }

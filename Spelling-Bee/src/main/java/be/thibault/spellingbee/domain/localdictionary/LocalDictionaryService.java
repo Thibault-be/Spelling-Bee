@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 public class LocalDictionaryService {
 
     private final LocalDictionaryReader localDictionaryReader;
-    private final LocalDictionaryEntryChecker localDictionaryEntryChecker; //todo: implement later
 
-    public LocalDictionaryService(LocalDictionaryReader localDictionaryReader, LocalDictionaryEntryChecker localDictionaryEntryChecker) {
+    public LocalDictionaryService(LocalDictionaryReader localDictionaryReader) {
         this.localDictionaryReader = localDictionaryReader;
-        this.localDictionaryEntryChecker = localDictionaryEntryChecker;
     }
 
     public LocalDictionary getLocalDictionary(String dictionary) {
