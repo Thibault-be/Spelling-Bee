@@ -5,7 +5,6 @@ import be.thibault.spellingbee.domain.game.GameState;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionary;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReader;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReaderImpl;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -82,20 +81,41 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     // there is something really wrong here
     private boolean isAvailable(LetterSelection letterSelection) {
         List<GameState> allGameStates = this.gameStateRepository.findAll();
-        Set<LetterSelection> collect = allGameStates.stream()
+        Set<LetterSelection> usedSelections = allGameStates.stream()
                 .map(GameState::getLetterSelection)
                 .collect(Collectors.toSet());
 
 
-        for (LetterSelection selection : collect){
-            if (selection.equals(letterSelection)){
-                System.out.println("whatever");
-                int x = 7;
+        if (usedSelections.isEmpty()) return true;
+
+        for (LetterSelection usedSelection : usedSelections) {
+            boolean b = hasSameLetters(usedSelection, letterSelection);
+            if (hasSameLetters(usedSelection, letterSelection)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasSameLetters(LetterSelection used, LetterSelection newSelection) {
+
+        List<String> usedLetters = used.getAllOptionalLettersAsList();
+        usedLetters.add(Character.toString(used.getCompulsoryLetter()));
+
+        List<String> newLetters = newSelection.getAllOptionalLettersAsList();
+        newLetters.add(Character.toString(newSelection.getCompulsoryLetter()));
+
+        List<String> differentLetters = new ArrayList<>();
+        for (String newLetter : newLetters){
+            if (!usedLetters.contains(newLetter)){
+                differentLetters.add(newLetter);
             }
         }
 
-        boolean contains = collect.contains(letterSelection);
+        Set<String> mismatch = newLetters.stream()
+                .filter(x -> !usedLetters.contains(x))
+                .collect(Collectors.toSet());
 
-        return !collect.contains(letterSelection);
+        return mismatch.isEmpty();
     }
 }
