@@ -9,6 +9,15 @@ spring:
   h2:
     console:
       enabled: true
+spelling-bollie:
+  local-dictionary-path:
+    larger: "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/english.txt"
+    smaller: "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/usa-english.txt"
 api:
   dictionary:
     basepath: "https://api.dictionaryapi.dev/api/v2/entries/en/"
+
+
+
+
+

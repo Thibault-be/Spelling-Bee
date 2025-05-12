@@ -8,8 +8,6 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-//todo: move businesslogic-y methods outside of this class
-
 @Entity
 @Table(name = "GAMESTATE")
 public class GameState {
@@ -47,72 +45,11 @@ public class GameState {
         this.letterSelection = letterSelection;
         this.possibleWords = possibleWords;
         this.foundWords = new HashSet<>();
-        this.score = 0;
-        this.maxScore = determineMaxScore();
-        determineRanking();
+        this.ranking = Ranking.BEGINNER;
     }
 
-    public void addGuessToFoundWords(String guess) {
-        this.foundWords.add(guess);
-    }
-
-    public void updateScore(String guess) {
-        this.score += determineWordScore(guess);
-    }
-
-    public int determineWordScore(String answer) {
-        int length = answer.length();
-        int guessScore = 0;
-
-        if (length == 4) {
-            guessScore = 1;
-            return guessScore;
-        }
-
-        guessScore += answer.length();
-
-        if (this.getLetterSelection().containsAllSevenLetters(answer)) {
-            guessScore += 7;
-        }
-
-        return guessScore;
-    }
-
-    private int determineMaxScore() {
-        this.possibleWords
-                .forEach(word -> this.maxScore += determineWordScore(word));
-
-        return this.maxScore;
-    }
-
-    public void determineRanking() {
-
-        double percentage = ((double) this.score / (double) this.maxScore) * 100;
-        Ranking newRank = null;
-
-        if (percentage == 100) {
-            newRank = Ranking.QUEEN_BEE;
-        } else if (percentage < 2) {
-            newRank = Ranking.BEGINNER;
-        } else if (percentage < 5) {
-            newRank = Ranking.GOOD_START;
-        } else if (percentage < 8) {
-            newRank = Ranking.MOVING_UP;
-        } else if (percentage < 15) {
-            newRank = Ranking.GOOD;
-        } else if (percentage < 25) {
-            newRank = Ranking.SOLID;
-        } else if (percentage < 40) {
-            newRank = Ranking.NICE;
-        } else if (percentage < 51) {
-            newRank = Ranking.GREAT;
-        } else if (percentage < 71) {
-            newRank = Ranking.AMAZING;
-        } else {
-            newRank = Ranking.GENIUS;
-        }
-
-        this.ranking = newRank;
+    public void setMaxScore(int newMaxScore){
+        this.maxScore = newMaxScore;
     }
 
     public Long getGameId() {
@@ -158,7 +95,19 @@ public class GameState {
         return this.score;
     }
 
+    public void setScore(int score){
+        this.score = score;
+    }
+
     public Ranking getRanking() {
         return ranking;
+    }
+
+    public int getMaxScore(){
+        return this.maxScore;
+    }
+
+    public void setRanking(Ranking ranking){
+        this.ranking = ranking;
     }
 }
