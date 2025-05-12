@@ -1,5 +1,6 @@
 package be.thibault.spellingbee.domain.localdictionary;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,17 +11,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class LocalDictionaryReaderImpl implements LocalDictionaryReader {
+public class LargerDictionaryReader implements LocalDictionaryReader {
 
-    //todo: I think it would be better to just have two bean implementations rather than having to call the method for a dictionary
-
-    public static final String LARGER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/english.txt";
-    public static final String SMALLLER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/usa-english.txt";
+    @Value("${spelling-bollie.local-dictionary-path.larger}")
+    private String largerDictionary;
 
 
     @Override
-    public LocalDictionary getLocalDictionary(String dictionary){
-        return importDictionary(dictionary);
+    public LocalDictionary getLocalDictionary() {
+        return importDictionary(this.largerDictionary);
     }
 
     private LocalDictionary importDictionary(String dictionary) {
@@ -35,7 +34,6 @@ public class LocalDictionaryReaderImpl implements LocalDictionaryReader {
                 throw new RuntimeException("Could not find dictionary", e);
             }
         }
-
         return null;
     }
 }
