@@ -36,6 +36,8 @@ public class GameServiceImpl implements GameService {
         LocalDictionaryComparison localDictionaryComparison = this.localDictionaryService.getLocalDictionaryComparison(letterSelection);
 
         GameState gameState = new GameState(letterSelection, localDictionaryComparison.matchingEntries());
+        int maxScore = determineMaxScore(gameState.getPossibleWords());
+        gameState.setMaxScore(maxScore);
         gameStateRepository.save(gameState);
 
         return gameState;
@@ -54,5 +56,7 @@ public class GameServiceImpl implements GameService {
         return gameStateOptional.orElseThrow();
     }
 
-
+    private int determineMaxScore(Set<String> possibleWords) {
+        return this.updateGameStateService.determineMaxScore(possibleWords);
+    }
 }

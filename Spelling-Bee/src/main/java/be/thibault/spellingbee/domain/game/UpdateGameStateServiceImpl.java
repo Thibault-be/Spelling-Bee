@@ -30,6 +30,12 @@ public class UpdateGameStateServiceImpl implements UpdateGameStateService {
         return guessResult;
     }
 
+    @Override
+    public int determineMaxScore(Set<String> possibleWords){
+        return possibleWords.stream()
+                .reduce(0, (id, word) -> id + determineGuessScore(word), (a, b) -> a + b);
+    }
+
     private GuessResult validGuess(String guess, GameState gameState) {
 
         Set<String> foundWords = gameState.getFoundWords();
@@ -57,7 +63,7 @@ public class UpdateGameStateServiceImpl implements UpdateGameStateService {
     // 4-letter words = 1 point.
     // more than 4 letters = 1 point per letter.
     // All 7 different letters used = 7 bonus points
-    private int determineGuessScore(String guess) {
+    public int determineGuessScore(String guess) {
         int length = guess.length();
         int guessScore = 0;
 
