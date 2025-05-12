@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 @Service
 public class LocalDictionaryReaderImpl implements LocalDictionaryReader {
 
+    //todo: I think it would be better to just have two bean implementations rather than having to call the method for a dictionary
+
     public static final String LARGER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/english.txt";
     public static final String SMALLLER_DICTIONARY = "D:/Projects/Spelling Bee/Spelling-Bee/src/main/resources/usa-english.txt";
 
