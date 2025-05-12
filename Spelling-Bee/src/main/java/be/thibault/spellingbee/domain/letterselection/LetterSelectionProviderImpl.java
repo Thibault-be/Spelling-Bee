@@ -1,7 +1,6 @@
 package be.thibault.spellingbee.domain.letterselection;
 
 import be.thibault.spellingbee.adapters.repository.GameStateRepository;
-import be.thibault.spellingbee.domain.game.GameState;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionary;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReader;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReaderImpl;
@@ -85,10 +84,8 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     //todo: refactor. Now we are loading all gamestates. This method probably shouldn't be here.
     private boolean isAvailable(LetterSelection letterSelection) {
-        List<GameState> allGameStates = this.gameStateRepository.findAll();
-        Set<LetterSelection> usedSelections = allGameStates.stream()
-                .map(GameState::getLetterSelection)
-                .collect(Collectors.toSet());
+
+        List<LetterSelection> usedSelections = this.gameStateRepository.findUsedLetterSelections();
 
         if (usedSelections.isEmpty()) return true;
 
