@@ -11,26 +11,23 @@ import java.util.stream.Collectors;
 @Service
 public class LocalDictionaryService {
 
-    private final LocalDictionaryReader localDictionaryReader;
+    private final LargerDictionaryReader largerDictionaryReader;
+    private final SmallerDictionaryReader smallerDictionaryReader;
 
-    public LocalDictionaryService(LocalDictionaryReader localDictionaryReader) {
-        this.localDictionaryReader = localDictionaryReader;
+    public LocalDictionaryService(LargerDictionaryReader largerDictionaryReader, SmallerDictionaryReader smallerDictionaryReader) {
+        this.largerDictionaryReader = largerDictionaryReader;
+        this.smallerDictionaryReader = smallerDictionaryReader;
     }
-
-    public LocalDictionary getLocalDictionary(String dictionary) {
-        return this.localDictionaryReader.getLocalDictionary(dictionary);
-    }
-
 
     public Set<String> localEntriesFromLetterSelection(LetterSelection letterSelection) {
 
-        LocalDictionary alphaDictionary = getLocalDictionary(LocalDictionaryReaderImpl.LARGER_DICTIONARY);
+        LocalDictionary largerDictionary = this.largerDictionaryReader.getLocalDictionary();
 
         List<String> allLetters = letterSelection.getAllOptionalLettersAsList();
         String compulsoryLetter = String.valueOf(letterSelection.getCompulsoryLetter());
         allLetters.add(compulsoryLetter);
 
-        return alphaDictionary.entries().stream()
+        return largerDictionary.entries().stream()
                 .filter(entry -> entry.contains(compulsoryLetter))
                 .filter(entry -> entry.length() >= 4)
                 .filter(entry -> entry.chars().allMatch(c -> allLetters.contains(Character.toString(c))))
@@ -46,7 +43,7 @@ public class LocalDictionaryService {
 
     private LocalDictionaryComparison compareToSmallerDictionary(Set<String> largerEntries) {
 
-        LocalDictionary mitDictionary = getLocalDictionary(LocalDictionaryReaderImpl.SMALLLER_DICTIONARY);
+        LocalDictionary mitDictionary = this.smallerDictionaryReader.getLocalDictionary();
 
         Set<String> partOfMit = new HashSet<>();
         Set<String> notFoundInMit = new HashSet<>();

@@ -1,9 +1,8 @@
 package be.thibault.spellingbee.domain.letterselection;
 
 import be.thibault.spellingbee.adapters.repository.GameStateRepository;
+import be.thibault.spellingbee.domain.localdictionary.LargerDictionaryReader;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionary;
-import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReader;
-import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryReaderImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,11 +16,11 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     private static final String ALL_VOWELS = "aeiou";
     private static final Random RANDOM = new Random();
-    private final LocalDictionaryReader localDictionaryReader;
+    private final LargerDictionaryReader largerDictionaryReader;
     private final GameStateRepository gameStateRepository;
 
-    public LetterSelectionProviderImpl(LocalDictionaryReader localDictionaryReader, GameStateRepository gameStateRepository) {
-        this.localDictionaryReader = localDictionaryReader;
+    public LetterSelectionProviderImpl(LargerDictionaryReader largerDictionaryReader, GameStateRepository gameStateRepository) {
+        this.largerDictionaryReader = largerDictionaryReader;
         this.gameStateRepository = gameStateRepository;
     }
 
@@ -31,7 +30,7 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
     }
 
     private LetterSelection getNewLetterSelectionFromDictionary() {
-        LocalDictionary largerDictionary = this.localDictionaryReader.getLocalDictionary(LocalDictionaryReaderImpl.LARGER_DICTIONARY);
+        LocalDictionary largerDictionary = this.largerDictionaryReader.getLocalDictionary();
         Set<String> entries = largerDictionary.entries();
 
         Optional<LetterSelection> letterSelection = entries.stream()
@@ -44,7 +43,7 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
         return letterSelection.orElseThrow();
     }
 
-    private boolean doesNotContainLetterS(String entry){
+    private boolean doesNotContainLetterS(String entry) {
         return !entry.contains("s");
     }
 
@@ -82,7 +81,6 @@ public class LetterSelectionProviderImpl implements LetterSelectionProvider {
 
     }
 
-    //todo: refactor. Now we are loading all gamestates. This method probably shouldn't be here.
     private boolean isAvailable(LetterSelection letterSelection) {
 
         List<LetterSelection> usedSelections = this.gameStateRepository.findUsedLetterSelections();
