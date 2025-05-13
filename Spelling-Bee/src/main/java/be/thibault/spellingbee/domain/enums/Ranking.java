@@ -21,4 +21,8 @@ public enum Ranking {
         this.frontName = frontName;
     }
 
+    public String getFrontName(){
+        return this.frontName;
+    }
+
 }

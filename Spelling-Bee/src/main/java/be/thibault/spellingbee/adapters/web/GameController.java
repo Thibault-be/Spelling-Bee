@@ -69,7 +69,7 @@ public class GameController {
         dataModel.put("possibleWords", gameState.getPossibleWords());
         dataModel.put("score", gameState.getScore());
         dataModel.put("letterLayout", gameState.getLetterSelection().getFrontendLetterLayout());
-        dataModel.put("ranking", gameState.getRanking());
+        dataModel.put("ranking", gameState.getRanking().getFrontName());
 
         return dataModel;
     }
