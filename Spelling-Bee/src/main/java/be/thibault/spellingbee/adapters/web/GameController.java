@@ -3,6 +3,7 @@ package be.thibault.spellingbee.adapters.web;
 import be.thibault.spellingbee.configuration.FreemarkerConfig;
 import be.thibault.spellingbee.domain.game.GameService;
 import be.thibault.spellingbee.domain.game.GameState;
+import be.thibault.spellingbee.domain.game.PreviousGameInfo;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -35,7 +37,7 @@ public class GameController {
         log.info("Starting a new game");
         GameState gameState = gameService.startNewGame();
         Map<String, Object> dataModel = generateDataModel(gameState);
-        return generateHtml(dataModel);
+        return generateHtml(dataModel, "main-screen.ftl");
     }
 
     @PostMapping ("/try-guess")
@@ -44,12 +46,24 @@ public class GameController {
         String verification = gameService.verifyGuess(guess, gameId);
         Map<String, Object> dataModel = generateDataModel(gameService.getGameById(gameId), verification);
 
-        return generateHtml(dataModel);
+        return generateHtml(dataModel, "main-screen.ftl");
     }
 
-    private String generateHtml(Map<String, Object> dataModel){
+    @GetMapping("/previous-games")
+    public String previousGames(){
+        //GameState gameState = this.gameService.getGameById(gameId);
+        List<PreviousGameInfo> previousGames = this.gameService.getPreviousGames();
+
+        //Map<String, Object> dataModel = generateDataModel(gameState);
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("previousGames", previousGames);
+
+        return generateHtml(dataModel, "games.ftl");
+    }
+
+    private String generateHtml(Map<String, Object> dataModel, String templateName){
         try {
-            Template template = freemarkerConfig.freemarkerConfiguration().getTemplate("post.ftl");
+            Template template = freemarkerConfig.freemarkerConfiguration().getTemplate(templateName);
             Writer out = new StringWriter();
             template.process(dataModel, out);
             return out.toString();
@@ -57,6 +71,7 @@ public class GameController {
             throw new RuntimeException("problem");
         }
     }
+
 
     private Map<String, Object> generateDataModel(GameState gameState){
 
@@ -69,7 +84,7 @@ public class GameController {
         dataModel.put("possibleWords", gameState.getPossibleWords());
         dataModel.put("score", gameState.getScore());
         dataModel.put("letterLayout", gameState.getLetterSelection().getFrontendLetterLayout());
-        dataModel.put("ranking", gameState.getRanking());
+        dataModel.put("ranking", gameState.getRanking().getFrontName());
 
         return dataModel;
     }

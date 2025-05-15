@@ -8,6 +8,7 @@ import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryComparison;
 import be.thibault.spellingbee.domain.localdictionary.LocalDictionaryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,6 +49,18 @@ public class GameServiceImpl implements GameService {
         GameState gameState = getGameById(gameId);
         GuessResult guessResult = this.updateGameStateService.updateGameState(gameState, guess);
         return guessResult.getDescription();
+    }
+
+    @Override
+    public List<PreviousGameInfo> getPreviousGames() {
+        List<PreviousGameInfoProjection> sevenMostRecentGamesInfo = this.gameStateRepository.getSevenMostRecentGamesInfo();
+
+        return sevenMostRecentGamesInfo.stream()
+                .map(gameProjection ->
+                        new PreviousGameInfo(gameProjection.getId(),
+                                gameProjection.getLetterSelection(),
+                                gameProjection.getRanking()))
+                .toList();
     }
 
     public GameState getGameById(String id) {
