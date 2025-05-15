@@ -119,6 +119,83 @@
             top: 10px;
             right: 10px;
             }
+
+            .old-games-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            }
+
+            .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .popup-content {
+            background-color: #2c2c2c;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #ffd700;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            color: #ffd700;
+            }
+
+            .close {
+            color: #ffd700;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            }
+
+            .close:hover {
+            color: #e6c200;
+            }
+
+            table {
+            width: 100%;
+            border-collapse: collapse;
+            }
+
+            th, td {
+            border: 1px solid #ffd700;
+            padding: 8px;
+            text-align: left;
+            }
+
+            th {
+            background-color: #333;
+            }
+
+            tr:nth-child(even) {
+            background-color: #444;
+            }
+                .previous-games-button {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                padding: 9px 16px;
+                background-color: #ffd700;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                cursor: pointer;
+                color: #333;
+                text-decoration: none; /* Remove underline */
+                }
+
+                .previous-games-button:hover {
+                background-color: #e6c200;
+                }
         </style>
     </head>
     <body>
@@ -132,6 +209,26 @@
         <div class="score">Score: ${score}</div>
 
         <button class="new-game-button" onclick="startNewGame()">Start New Game</button>
+        <a href="/spelling-bollie/previous-games" class="previous-games-button">Previous Games</a>
+
+        <!-- Popup Structure -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h2>Previous Games</h2>
+                <table id="gamesTable">
+                    <thead>
+                        <tr>
+                            <th>Game ID</th>
+                            <th>Letters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <div class="beehive">
             <div class="row">
@@ -182,7 +279,6 @@
     }
 
     function startNewGame() {
-    console.log("click");
     const url = "http://localhost:8080/spelling-bollie/start-game";
 
     fetch(url, {
@@ -198,6 +294,25 @@
     }).catch(err => {
     console.error("Error starting new game:", err);
     alert("Error starting new game. Please try again.");
+    });
+    }
+
+    function previousGames() {
+    const url = "http://localhost:8080/spelling-bollie/previous-games";
+
+    fetch(url, {
+    method: 'GET'
+    }).then(response => {
+    if (response.ok) {
+    return response.text();
+    } else {
+    throw new Error("Failed to get previous games.");
+    }
+    }).then(html => {
+    document.body.innerHTML = html;
+    }).catch(err => {
+    console.error("Error getting previous games:", err);
+    alert("Error getting the previous games..");
     });
     }
 
