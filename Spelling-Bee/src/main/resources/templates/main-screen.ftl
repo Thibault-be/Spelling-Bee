@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spelling Bollie</title>
         <style>
             body {
@@ -15,15 +16,15 @@
             }
 
             .hex {
-            width: 60px;
-            height: 60px;
+            width: 15vw; /* Use viewport width for responsive sizing */
+            height: 15vw;
             background-color: #333;
             color: #ffd700;
             display: inline-block;
-            margin: 5px;
-            line-height: 60px;
+            margin: 2vw;
+            line-height: 15vw;
             position: relative;
-            font-size: 24px;
+            font-size: 6vw;
             font-weight: bold;
             border: 1px solid #ffd700;
             border-radius: 50%;
@@ -52,7 +53,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 40px 0;
+            margin: 10vw 0;
             }
 
             .row {
@@ -62,13 +63,13 @@
 
             .bottom-section {
             background-color: #2c2c2c;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 5vw;
+            margin-top: 10vw;
             }
 
             .score {
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 5vw;
+            margin-bottom: 2vw;
             }
 
             .word-list {
@@ -79,32 +80,32 @@
 
             .word-list div {
             background-color: #444;
-            margin: 5px;
-            padding: 5px 10px;
-            border-radius: 8px;
+            margin: 1vw;
+            padding: 2vw 4vw;
+            border-radius: 2vw;
             }
 
             .guess-form {
-            margin: 20px 0;
+            margin: 5vw 0;
             }
 
             input[type="text"] {
-            padding: 8px;
-            font-size: 24px;
+            padding: 2vw;
+            font-size: 6vw;
             border: 1px solid #ffd700;
-            border-radius: 4px;
-            width: 200px;
+            border-radius: 1vw;
+            width: 50vw;
             background-color: #333;
             color: #ffd700;
             text-align: center;
             }
 
             button {
-            padding: 9px 16px;
-            margin: 5px;
+            padding: 2vw 4vw;
+            margin: 1vw;
             background-color: #ffd700;
             border: none;
-            border-radius: 4px;
+            border-radius: 1vw;
             font-weight: bold;
             cursor: pointer;
             color: #333;
@@ -116,14 +117,26 @@
 
             .new-game-button {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 2vw;
+            right: 2vw;
             }
 
-            .old-games-button {
+            .previous-games-button {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 2vw;
+            left: 2vw;
+            padding: 2vw 4vw;
+            background-color: #ffd700;
+            border: none;
+            border-radius: 1vw;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            }
+
+            .previous-games-button:hover {
+            background-color: #e6c200;
             }
 
             .popup {
@@ -141,18 +154,18 @@
             .popup-content {
             background-color: #2c2c2c;
             margin: 15% auto;
-            padding: 20px;
+            padding: 5vw;
             border: 1px solid #ffd700;
-            width: 80%;
+            width: 90%;
             max-width: 600px;
-            border-radius: 8px;
+            border-radius: 2vw;
             color: #ffd700;
             }
 
             .close {
             color: #ffd700;
             float: right;
-            font-size: 28px;
+            font-size: 7vw;
             font-weight: bold;
             cursor: pointer;
             }
@@ -168,7 +181,7 @@
 
             th, td {
             border: 1px solid #ffd700;
-            padding: 8px;
+            padding: 2vw;
             text-align: left;
             }
 
@@ -179,23 +192,24 @@
             tr:nth-child(even) {
             background-color: #444;
             }
-                .previous-games-button {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                padding: 9px 16px;
-                background-color: #ffd700;
-                border: none;
-                border-radius: 4px;
-                font-weight: bold;
-                cursor: pointer;
-                color: #333;
-                text-decoration: none; /* Remove underline */
-                }
 
-                .previous-games-button:hover {
-                background-color: #e6c200;
-                }
+            @media (max-width: 600px) {
+            .hex {
+            width: 20vw;
+            height: 20vw;
+            line-height: 20vw;
+            font-size: 8vw;
+            margin: 1vw;
+            }
+
+            input[type="text"] {
+            width: 70vw;
+            }
+
+            button {
+            padding: 3vw 6vw;
+            }
+            }
         </style>
     </head>
     <body>
@@ -312,7 +326,7 @@
     document.body.innerHTML = html;
     }).catch(err => {
     console.error("Error getting previous games:", err);
-    alert("Error getting the previous games..");
+    alert("Error getting the previous games.");
     });
     }
 
