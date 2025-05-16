@@ -1,0 +1,11 @@
+frontend
+----------
+
+possible words should be hidden
+some kind of animation with found words / score update
+option to go back to previous games
+
+basepath should be a variable in the front end
+
+
+delete old games
