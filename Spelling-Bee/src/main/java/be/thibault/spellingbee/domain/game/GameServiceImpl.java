@@ -64,7 +64,6 @@ public class GameServiceImpl implements GameService {
     }
 
     public GameState getGameById(String id) {
-        //todo: IDs need to be handled much better
         Optional<GameState> gameStateOptional = this.gameStateRepository.findById(id.replace(",", ""));
         return gameStateOptional.orElseThrow();
     }
