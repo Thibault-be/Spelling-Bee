@@ -353,13 +353,6 @@
 </#if>
 
 <div class="bottom-section">
-    <div><strong>Possible words:</strong></div>
-    <div class="word-list">
-        <#list possibleWords as word>
-            <div>${word}</div>
-        </#list>
-    </div>
-
     <div><strong>Found words:</strong></div>
     <div class="word-list">
         <#list foundWords as word>
