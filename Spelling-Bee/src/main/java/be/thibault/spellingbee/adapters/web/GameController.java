@@ -51,14 +51,24 @@ public class GameController {
 
     @GetMapping("/previous-games")
     public String previousGames(){
-        //GameState gameState = this.gameService.getGameById(gameId);
         List<PreviousGameInfo> previousGames = this.gameService.getPreviousGames();
-
-        //Map<String, Object> dataModel = generateDataModel(gameState);
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("previousGames", previousGames);
 
         return generateHtml(dataModel, "games.ftl");
+    }
+
+    @GetMapping("/resume-game/{gameId}")
+    public String resumeGame(@PathVariable String gameId){
+        System.out.println("I am in resume game");
+
+        GameState gameState = gameService.getGameById(gameId);
+        Map<String, Object> dataModel = generateDataModel(gameState);
+
+
+        String html = generateHtml(dataModel, "main-screen.ftl");
+
+        return generateHtml(dataModel, "main-screen.ftl");
     }
 
     private String generateHtml(Map<String, Object> dataModel, String templateName){

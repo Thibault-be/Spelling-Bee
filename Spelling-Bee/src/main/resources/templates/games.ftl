@@ -108,18 +108,17 @@
                         <td>${game.id}</td>
                         <td>${game.letterSelection}</td>
                         <td>${game.ranking}</td>
-                        <td><button class="resume-button" onclick="resumeGame('${game.id}')">Resume</button></td>
+                        <td><button class="resume-button" onclick="resumeSelectedGame('${game.id}')">Resume</button></td>
                     </tr>
                 </#list>
             </tbody>
         </table>
 
         <script>
-            function resumeGame(gameId) {
-            // Implement the logic to resume the game with the given gameId
-            alert("Resume game with ID: " + gameId);
-            // Example: Redirect to the game page with the gameId as a parameter
-            window.location.href = "/spelling-bollie/game?gameId=" + gameId;
+            function resumeSelectedGame(gameId) {
+            const url = "http://localhost:8080/spelling-bollie/resume-game/" + gameId;
+
+            window.location.href = url;
             }
         </script>
     </body>

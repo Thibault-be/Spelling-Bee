@@ -17,7 +17,7 @@ public interface GameStateRepository extends JpaRepository<GameState, String> {
     @Query("""
             SELECT g.id as id, g.letterSelection as letterSelection, g.ranking as ranking
             FROM GameState g
-            ORDER BY g.id DESC LIMIT 7
+            ORDER BY g.id DESC LIMIT 15
             """)
     List<PreviousGameInfoProjection> getSevenMostRecentGamesInfo();
 
