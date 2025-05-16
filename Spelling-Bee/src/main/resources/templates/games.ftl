@@ -116,7 +116,7 @@
 
         <script>
             function resumeSelectedGame(gameId) {
-            const url = "http://localhost:8080/spelling-bollie/resume-game/" + gameId;
+            const url = "/spelling-bollie/resume-game/" + gameId;
 
             window.location.href = url;
             }

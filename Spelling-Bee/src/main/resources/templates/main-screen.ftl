@@ -293,7 +293,7 @@
     }
 
     function startNewGame() {
-    const url = "http://localhost:8080/spelling-bollie/start-game";
+    const url = "/spelling-bollie/start-game";
 
     fetch(url, {
     method: 'GET'
@@ -312,7 +312,7 @@
     }
 
     function previousGames() {
-    const url = "http://localhost:8080/spelling-bollie/previous-games";
+    const url = "/spelling-bollie/previous-games";
 
     fetch(url, {
     method: 'GET'
@@ -333,7 +333,7 @@
     function submitGuess() {
     const guess = document.getElementById('guessInput').value;
     const gameId = document.getElementById('gameId').textContent.split(" ")[1];
-    const url = "http://localhost:8080/spelling-bollie/try-guess?guess="
+    const url = "/spelling-bollie/try-guess?guess="
     + encodeURIComponent(guess)
     + "&gameId=" + encodeURIComponent(gameId);
 
